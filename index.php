@@ -1,4 +1,5 @@
 <?php session_start();
+//Probando para ver si funciona el gihub desde atom
 if(isset($_SESSION['id_user'])){
   $id_usuario=$_SESSION['id_user'];
   include 'php/conexion.php';
