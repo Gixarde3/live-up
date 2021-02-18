@@ -213,7 +213,7 @@
           <?php endif; ?>
           <?php if (isset($_GET['idBuscado'])): ?>
             <div class="botones">
-              <a href="../Home" style="width:20%; text-align: center;"> <img src="../images/hogar.svg" alt="Regresar a mi perfil"> Regresar a mi perfil</a>
+              <a href="../" style="width:20%; text-align: center;"> <img src="../images/hogar.svg" alt="Regresar a mi perfil"> Regresar a mi perfil</a>
             </div>
           <?php endif; ?>
         </div>
