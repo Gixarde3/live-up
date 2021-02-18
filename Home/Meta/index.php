@@ -25,21 +25,30 @@
     include '../../php/conexion.php';
     include '../../php/amigos.php';
     $con=conectar();
-    $user=$_SESSION['usuario'];
-    $sql="SELECT * FROM users WHERE usuario='$user'";
+    if(isset($_GET['idBuscado'])){
+      $buscarUsuario=$_GET['idBuscado'];
+      $sql="SELECT * FROM users WHERE idusuario='$buscarUsuario'";
+      $consulta=mysqli_query($con,$sql);
+      while($resultado=mysqli_fetch_object($consulta)){
+        $user=$resultado->usuario;
+        $id_usu=$resultado->idusuario;
+      }
+    }
+    $usuarioEnLinea=$_SESSION['usuario'];
+    $sql="SELECT * FROM users WHERE usuario='$usuarioEnLinea'";
     $active=33333;
     $verificada=63276;
     $consulta=mysqli_query($con,$sql);
     $count=0;
-    while($obj=mysqli_fetch_object($consulta)){
-      $_SESSION['id_user']=$obj->idusuario;
-      $_SESSION['usuario']=$obj->usuario;
-      $id_usu=$obj->idusuario;
-      $active=$obj->estado;
-      $verificada=$obj->verificada;
-      $nivel=$obj->nivel;
-      $porcentaje=$obj->porcentaje_nivel;
-    }
+      while($obj=mysqli_fetch_object($consulta)){
+        if(!isset($_GET['idBuscado'])){
+          $id_usu=$obj->idusuario;
+        }
+        $active=$obj->estado;
+        $verificada=$obj->verificada;
+        $nivel=$obj->nivel;
+        $porcentaje=$obj->porcentaje_nivel;
+      }
     $id_meta=$_GET['id_meta'];
     $hash=$_GET['hash'];
     $sql="SELECT * FROM metas_".$id_usu." WHERE id_meta='$id_meta' AND hash='$hash'";
@@ -149,36 +158,62 @@
           </div>
         </div>
         <div class="metas" id=metas>
-          <a href="../" style="width:100%; display: flex; justify-content: space-around;"><h2 style="width:40%; display: flex; align-items:center;">Tareas de: <?php echo $texto_meta ?> <img src="../images/hogar.svg" alt="" style="width: 8%; margin-left: 5px;"></h2>  </a>
+          <a href="../<?php echo isset($_GET['idBuscado'])?"?idBuscado=".$_GET['idBuscado']:"" ?>" style="width:100%; display: flex; justify-content: space-around;"><h2 style="width:40%; display: flex; align-items:center;">Tareas de: <?php echo $texto_meta ?><?php echo isset($_GET['idBuscado'])?" de ".$user:""; ?> <img src="../images/hogar.svg" alt="" style="width: 8%; margin-left: 5px;"></h2>  </a>
           <?php
           $porcentaje_ocupado=0;
           $contadorTareas=0;
           while($tareas=mysqli_fetch_array($resultado)){
             echo"<div class='meta tarea'>";
             if($tareas[3]==1){
-              echo "<div class='linea linea-tarea' style='justify-content: space-around;'><div style='display: flex; justify-content: space-between; width: 80%;'><p style='color: #43df30;'>".$tareas[4]."</p><p style='color: #43df30;'>Esta tarea otorgó ".$tareas[5]."% a la meta</p></div><div class='botones-tarea'><button class='meta-boton' type='button' name='cumplir' onclick='crear(5, ".$tareas[0].")'> <img src='../images/seleccione.svg' alt='Cumplir meta' class='cumplir'></button><button class='meta-boton' type='button' name='editar' onclick='crear(2, ".$tareas[0].")'> <img src='../images/editar.svg' alt='Editar meta'></button><button class='meta-boton' type='button' name='eliminar' onclick='crear(3, ".$tareas[0].")''> <img src='../images/eliminar.svg' alt='Eliminar meta'></button></div></div></div>";
+              echo "<div class='linea linea-tarea' style='justify-content: space-around;'><div style='display: flex; justify-content: space-between; width: 80%;'><p style='color: #43df30;'>".$tareas[4]."</p><p style='color: #43df30;'>Esta tarea otorgó ".$tareas[5]."% a la meta</p></div>";
+              if(!isset($_GET['idBuscado'])){
+                echo "<div class='botones-tarea'><button class='meta-boton' type='button' name='cumplir' onclick='crear(5, ".$tareas[0].")'> <img src='../images/seleccione.svg' alt='Cumplir meta' class='cumplir'></button><button class='meta-boton' type='button' name='editar' onclick='crear(2, ".$tareas[0].")'> <img src='../images/editar.svg' alt='Editar meta'></button><button class='meta-boton' type='button' name='eliminar' onclick='crear(3, ".$tareas[0].")''> <img src='../images/eliminar.svg' alt='Eliminar meta'></button></div>";
+              }else{
+                echo "<p style='color: #43df30 text-align:center; width: 15%;'>Esta tarea ya ha sido cumplida</p>";
+              }
+              echo "</div></div>";
             }else{
-              echo "<div class='linea linea-tarea' style='justify-content: space-around';><div style='display: flex; justify-content: space-between; width: 80%;'><p>".$tareas[4]."</p><p>Esta tarea otorga ".$tareas[5]."% a la meta</p></div><div class='botones-tarea'><button class='meta-boton' type='button' name='cumplir' onclick='crear(4, ".$tareas[0].")'> <img src='../images/seleccione.svg' alt='Cumplir meta'></button><button class='meta-boton' type='button' name='editar' onclick='crear(2, ".$tareas[0].")'> <img src='../images/editar.svg' alt='Editar meta'></button><button class='meta-boton' type='button' name='eliminar' onclick='crear(3, ".$tareas[0].")''> <img src='../images/eliminar.svg' alt='Eliminar meta'></button></div></div></div>";
+              echo "<div class='linea linea-tarea' style='justify-content: space-around';><div style='display: flex; justify-content: space-between; width: 80%;'><p>".$tareas[4]."</p><p>Esta tarea otorga ".$tareas[5]."% a la meta</p></div>";
+              if(!isset($_GET['idBuscado'])){
+                echo "<div class='botones-tarea'><button class='meta-boton' type='button' name='cumplir' onclick='crear(4, ".$tareas[0].")'> <img src='../images/seleccione.svg' alt='Cumplir meta'></button><button class='meta-boton' type='button' name='editar' onclick='crear(2, ".$tareas[0].")'> <img src='../images/editar.svg' alt='Editar meta'></button><button class='meta-boton' type='button' name='eliminar' onclick='crear(3, ".$tareas[0].")''> <img src='../images/eliminar.svg' alt='Eliminar meta'></button></div>";
+              }else{
+                echo "<p style='text-align:center; width: 15%;'>Esta tarea no ha sido cumplida</p>";
+              }
+              echo "</div></div>";
             }
           $contadorTareas++;
           $porcentaje_ocupado+=$tareas[5];
           }
           ?>
           <?php if ($contadorTareas==0): ?>
-            <div class="tarea-nueva">
-              <h2>¡Parece que no tienes ninguna tarea en esta tarea!</h2>
-              <h3>Para comenzar, añade una tarea pequeña para ir completando esta meta</h3>
-              <h2>Añade una:</h2>
-              <form action='' method='post'>
-                <input class='metaNueva' type='text' name='tareaNueva' placeholder='Ingresa una tarea' required>
-                <input class='metaNueva' type='text' name='porcentajeTarea' placeholder='Ingresa el porcentaje que da a la meta' required>
-                <input class='anadirBoton' type='submit' value='Añadir' name='anadir'>
-              </form>
-            </div>
+            <?php if (isset($_GET['idBuscado'])): ?>
+              <div class="tarea-nueva">
+                <h2>¡Parece que <?php echo $user; ?> no tiene ninguna tarea en esta meta!</h2>
+                <h3>Dile que añada una</h3>
+              </div>
+            <?php else: ?>
+              <div class="tarea-nueva">
+                <h2>¡Parece que no tienes ninguna tarea en esta meta!</h2>
+                <h3>Para comenzar, añade una tarea pequeña para ir completando esta meta</h3>
+                <h2>Añade una:</h2>
+                <form action='' method='post'>
+                  <input class='metaNueva' type='text' name='tareaNueva' placeholder='Ingresa una tarea' required>
+                  <input class='metaNueva' type='text' name='porcentajeTarea' placeholder='Ingresa el porcentaje que da a la meta' required>
+                  <input class='anadirBoton' type='submit' value='Añadir' name='anadir'>
+                </form>
+              </div>
+            <?php endif; ?>
           <?php endif; ?>
           <?php if ($contadorTareas>=1): ?>
+            <?php if (!isset($_GET['idBuscado'])): ?>
+              <div class="botones">
+                <button type="button" name="crear" onclick="crear(1,0)"> <img src="images/anadir.svg" alt="Crear meta"> <p>Crear</p></button>
+              </div>
+            <?php endif; ?>
+          <?php endif; ?>
+          <?php if (isset($_GET['idBuscado'])): ?>
             <div class="botones">
-              <button type="button" name="crear" onclick="crear(1,0)" style='margin-top: 30px;'> <img src="../images/anadir.svg" alt="Crear tareas"> <p>Crear</p></button>
+              <a href="../Home" style="width:20%; text-align: center;"> <img src="../images/hogar.svg" alt="Regresar a mi perfil"> Regresar a mi perfil</a>
             </div>
           <?php endif; ?>
         </div>
