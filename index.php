@@ -58,26 +58,18 @@ if(isset($_SESSION['id_user'])){
             $id_usu=$obj->idusuario;
             $active=$obj->estado;
             $verificada=$obj->verificada;
-            if($active==0 && $verificada==1){
-              $query="UPDATE users SET estado=1 WHERE idusuario='$id_usu'";
-              $id_usu=$_SESSION['id_user'];
-              echo $_SESSION['id_user'];
-              mysqli_query($con, $query);
-              $count++;
-            }
+            $query="UPDATE users SET estado=1 WHERE idusuario='$id_usu'";
+            $id_usu=$_SESSION['id_user'];
+            echo $_SESSION['id_user'];
+            mysqli_query($con, $query);
+            $count++;
           }
            if($count == 1)
            {
             return 1;
            }
-           else
-           {
-             if($verificada==0){
-               echo '<div class="error">Tu cuenta no ha sido verificada</div>';
-               return 2;
-             }else{
-               return 0;
-             }
+           else{
+            return 0;
            }
         }
         if(isset($_SESSION['id_user'])){

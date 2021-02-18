@@ -15,7 +15,7 @@
         mysqli_query($con, $sql);
         session_destroy();
         echo 'Redireccionando';
-        echo '<script type="text/javascript">window.location="/live-up";</script>';
+        echo '<script type="text/javascript">window.location="/";</script>';
     ?>
   </body>
 </html>
