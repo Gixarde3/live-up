@@ -207,7 +207,7 @@
           <?php if ($contadorTareas>=1): ?>
             <?php if (!isset($_GET['idBuscado'])): ?>
               <div class="botones">
-                <button type="button" name="crear" onclick="crear(1,0)"> <img src="images/anadir.svg" alt="Crear meta"> <p>Crear</p></button>
+                <button type="button" name="crear" onclick="crear(1,0)"> <img src="../images/anadir.svg" alt="Crear meta"> <p>Crear</p></button>
               </div>
             <?php endif; ?>
           <?php endif; ?>
@@ -220,7 +220,6 @@
       </div>
     </div>
     <div id=crear-meta class=crear-meta>
-
     </div>
     <canvas id="stars"></canvas>
     <script src="../../js/fondo.js"></script>
