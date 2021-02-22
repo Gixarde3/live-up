@@ -41,7 +41,7 @@ function caida() {
     canvas.height = window.innerHeight;
     h=canvas.height;
     w=canvas.width;
-    inicio();
+    caida();
     console.log("la pantalla cambió de tamaño");
   }
   window.onresize = resize;

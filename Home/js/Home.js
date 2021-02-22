@@ -41,7 +41,7 @@ async function abrir(){
     for (var i = 10; i > 0; i=i-1) {
       width=width-4;
       height=height-3;
-      document.getElementById('crear-meta').style='display: flex;z-index: 7; width: '+width+'%;left: '+(50-(width/2))+'%;height: '+height+'%;top: '+(50-(height/2))+'%;';
+      document.getElementById('crear-meta').style='display: flex;z-index: 8; width: '+width+'%;left: '+(50-(width/2))+'%;height: '+height+'%;top: '+(50-(height/2))+'%;';
       document.getElementById('titulo').style='font-size: '+height+'px;';
       if(document.getElementById('aclaracion')){
         document.getElementById('aclaracion').style='display: none;';
@@ -84,13 +84,14 @@ async function abrir(){
       document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'><img src='images/cerrar.svg' alt='Cerrar'></button><h2 id=titulo>Porcentaje inválido</h2><p class='texto-aclaracion' id=aclaracion>Parece que quiere añadir una meta que completará su meta a más del 100%. Inténtelo de nuevo.</p><button type='button' name='no' onclick='minimizar()' class='no'><p>Cerrar</p></button>";
       break;
     }
-    document.getElementById('fondo-abrido').style='display: block; z-index:6;';
+    document.getElementById('fondo-abrido').style='display: block; z-index:7;';
+    console.log("Por alguna razón, no se actualiza en el servidor");
     var width=0;
     var height=0;
     for (var i = 0; i < 10; i++) {
       width=width+anchoSalto;
       height=height+3;
-      document.getElementById('crear-meta').style='display: flex;z-index: 7; width: '+width+'%;left: '+(50-(width/2))+'%;height: '+height+'%;top: '+(50-(height/2))+'%;';
+      document.getElementById('crear-meta').style='display: flex;z-index: 8; width: '+width+'%;left: '+(50-(width/2))+'%;height: '+height+'%;top: '+(50-(height/2))+'%;';
       document.getElementById('titulo').style='font-size: '+height+'px;';
       await sleep(1);
     }
