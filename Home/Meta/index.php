@@ -167,7 +167,7 @@
             if($tareas[3]==1){
               echo "<div class='linea linea-tarea moviles' style='justify-content: space-around;'><div class='espacio'><p style='color: #43df30;'>".$tareas[4]."</p><p style='color: #43df30;'>Esta tarea otorgó ".$tareas[5]."% a la meta</p></div>";
               if(!isset($_GET['idBuscado'])){
-                echo "<div class='botones-tarea'><button class='meta-boton' type='button' name='cumplir' onclick='crear(5, ".$tareas[0].")'> <img src='../images/seleccione.svg' alt='Cumplir meta' class='cumplir'></button><button class='meta-boton' type='button' name='editar' onclick='crear(2, ".$tareas[0].")'> <img src='../images/editar.svg' alt='Editar meta'></button><button class='meta-boton' type='button' name='eliminar' onclick='crear(3, ".$tareas[0].")''> <img src='../images/eliminar.svg' alt='Eliminar meta'></button></div>";
+                echo "<div class='botones-tarea'><button class='meta-boton' type='button' name='cumplir' onclick='crear(5, ".$tareas[0].")'> <img src='../images/seleccione.svg' alt='Cumplir meta' class='cumplir'></button><button class='meta-boton' type='button' name='editar' onclick='crear(8, ".$tareas[0].")'> <img src='../images/editar.svg' alt='Editar meta'></button><button class='meta-boton' type='button' name='eliminar' onclick='crear(9, ".$tareas[0].")''> <img src='../images/eliminar.svg' alt='Eliminar meta'></button></div>";
               }else{
                 echo "<p style='color: #43df30 text-align:center; width: 15%;'>Esta tarea ya ha sido cumplida</p>";
               }
@@ -175,7 +175,7 @@
             }else{
               echo "<div class='linea linea-tarea moviles' style='justify-content: space-around;'><div class='espacio'><p>".$tareas[4]."</p><p>Esta tarea otorgó ".$tareas[5]."% a la meta</p></div>";
               if(!isset($_GET['idBuscado'])){
-                echo "<div class='botones-tarea'><button class='meta-boton' type='button' name='cumplir' onclick='crear(4, ".$tareas[0].")'> <img src='../images/seleccione.svg' alt='Cumplir meta'></button><button class='meta-boton' type='button' name='editar' onclick='crear(2, ".$tareas[0].")'> <img src='../images/editar.svg' alt='Editar meta'></button><button class='meta-boton' type='button' name='eliminar' onclick='crear(3, ".$tareas[0].")''> <img src='../images/eliminar.svg' alt='Eliminar meta'></button></div>";
+                echo "<div class='botones-tarea'><button class='meta-boton' type='button' name='cumplir' onclick='crear(4, ".$tareas[0].")'> <img src='../images/seleccione.svg' alt='Cumplir meta'></button><button class='meta-boton' type='button' name='editar' onclick='crear(8, ".$tareas[0].")'> <img src='../images/editar.svg' alt='Editar meta'></button><button class='meta-boton' type='button' name='eliminar' onclick='crear(9, ".$tareas[0].")''> <img src='../images/eliminar.svg' alt='Eliminar meta'></button></div>";
               }else{
                 echo "<p style='text-align:center; width: 15%;'>Esta tarea no ha sido cumplida</p>";
               }
@@ -207,7 +207,7 @@
           <?php if ($contadorTareas>=1): ?>
             <?php if (!isset($_GET['idBuscado'])): ?>
               <div class="botones">
-                <button type="button" name="crear" onclick="crear(1,0)"> <img src="../images/anadir.svg" alt="Crear meta"> <p>Crear</p></button>
+                <button type="button" name="crear" onclick="crear(7,0)"> <img src="../images/anadir.svg" alt="Crear meta"> <p>Crear</p></button>
               </div>
             <?php endif; ?>
           <?php endif; ?>
