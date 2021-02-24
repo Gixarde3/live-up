@@ -142,7 +142,7 @@ if(isset($_SESSION['recargar'])){
             <p>Configuración</p>
           </div>
         </div>
-        <div class="metas" id=metas>
+        <div class="metas" id=metas style="display: block;">
           <h1>Metas <?php echo isset($_POST['metas_cumplidas'])?"cumplidas ":""; echo isset($_GET['idBuscado'])?"de ".$user:"";?></h1>
           <?php
           $contadorMetas=0;
