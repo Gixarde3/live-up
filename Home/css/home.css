@@ -105,7 +105,7 @@ h3{
 -moz-border-radius: 18px 18px 18px 18px;
 -webkit-border-radius: 18px 18px 18px 18px;
   background: rgba(255, 255, 255, 0.3);
-  position: fixed;
+  position: sticky;
 }
 .principal{
   display: flex;
@@ -202,6 +202,8 @@ width: 100%;
   align-items: center;
   justify-content: space-around;
   z-index: 2;
+  overflow-y: scroll;
+  height: 100%;
 }
 .meta{
   width: 90%;
@@ -347,10 +349,10 @@ width: 100%;
   display:none;
 }
 .buscar-page{
-  width: 70%;
+  width: 100%;
 }
 .buscar-page input[type="text"]{
-  width: 100%;
+  width: 70%;
   text-align: center;
 }
 .buscar-page input[type="submit"]{
@@ -371,6 +373,9 @@ width: 100%;
   position: relative;
   left: 5%;
   width: 90%;
+}
+.perfil-encontrado{
+  position:bottom;
 }
 /*Moviles*/
 @media screen and (max-width: 768px) {

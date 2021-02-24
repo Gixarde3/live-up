@@ -93,7 +93,7 @@
             <p>Configuración</p>
           </div>
         </div>
-        <div class="metas" id=metas>
+        <div class="metas" id=metas style="display:block;">
           <h2>Buscar usuarios:</h2>
           <form class="buscar-page" action="" method="get">
             <input type="text" name="buscar" value="<?php echo $_GET['buscar'] ?>" placeholder="Buscar un usuario">
@@ -104,7 +104,7 @@
           $contadorResultados=0;
           while ($usuario=mysqli_fetch_array($res)) {
             if($usuario[0]!=$id_usu){
-              echo "<div class='linea' style='margin-bottom:20px;'>".
+              echo "<div class='perfil-encontrado'><div class='linea' style='margin-bottom:20px;'>".
               "<a style='width: 30%;display:flex;align-items:center;flex-direction:column;justify-content:space-around;' href='../?idBuscado=".$usuario[0]."'>".
               $usuario[1]."</a>".
               "<div style='display: flex;width: 70%; flex-direction: column;justify-content: space-around; align-items:center'>".
@@ -115,7 +115,7 @@
               "<input type='text' name='amigo_anadir' value='".$usuario[0]."' style='display:none;'>".
               "<input class='".checarSiAmigo($id_usu, $usuario[0], $con)." amigos-anadir' type='image' name='anadirAmigo' value='simon' src=../images/".checarSiAmigo($id_usu,$usuario[0],$con).".svg>".
               "</form>
-              "."</div>";
+              "."</div></div>";
               $contadorResultados++;
             }
           }
@@ -124,7 +124,7 @@
             <h3>No hay ningun usuario que contenga en su nombre "<?php echo $_GET['buscar']; ?>".</h3>
             <h3>Intente con otra búsqueda.</h3>
           <?php endif; ?>
-          <a href="../" style="display: flex; flex-direction:column; margin-top:50px"> <img src="../images/hogar.svg" alt="Home"> Regresar</a>
+          <a href="../" style="display: flex; flex-direction:column; margin-top:50px;width: 100%;align-items: center;"> <img src="../images/hogar.svg" style="width:30%;" alt="Home"> Regresar</a>
         </div>
       </div>
     </div>
