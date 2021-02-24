@@ -17,7 +17,7 @@ async function abrir(){
     document.getElementById('flecha').style = '-webkit-transform: rotate(0deg);-moz-transform: rotate(0deg);-ms-transform: rotate(0deg);transform: rotate(0deg);';
     document.getElementById('borde').style='border-radius: 0px 18px 0px 0px;-moz-border-radius: 0px 18px 0px 0px;-webkit-border-radius: 0px 18px 0px 0px;';
     document.getElementById('fondo-abrido').style='display: none; z-index:0;';
-    document.getElementById('metas').style='position: relative; z-index: 6;';
+    document.getElementById('metas').style='display: block;z-index: 6;';
     document.getElementById('conf').style='border-radius: 0px 0px 18px 0px;';
     for (var x = porcentajeAAbrir; x > -110 ; x=x-10) {
       document.getElementById('desplegar').style= 'left: '+x+'%;';
@@ -27,7 +27,7 @@ async function abrir(){
       document.getElementById('flecha').style = '-webkit-transform: rotate(-180deg);-moz-transform: rotate(-180deg);-ms-transform: rotate(-180deg);transform: rotate(-180deg);';
       document.getElementById('borde').style='border-radius: 0px 0px 0px 0px;-moz-border-radius: 0px 0px 0px 0px;-webkit-border-radius: 0px 0px 0px 0px;';
       document.getElementById('fondo-abrido').style='display: block; z-index:3;';
-      document.getElementById('metas').style='position: relative; z-index: 2;';
+      document.getElementById('metas').style='display: block;z-index: 2;';
       document.getElementById('conf').style='border-radius: 0px 0px 0px 0px;';
       for (var x = -100; x < porcentajeAAbrir+10; x=x+10) {
         document.getElementById('desplegar').style= 'left: '+x+'%;';

@@ -143,7 +143,7 @@ if(isset($_SESSION['recargar'])){
           </div>
         </div>
         <div class="metas" id=metas style="display: block;">
-          <h1>Metas <?php echo isset($_POST['metas_cumplidas'])?"cumplidas ":""; echo isset($_GET['idBuscado'])?"de ".$user:"";?></h1>
+          <h1 style="width: 100%; text-align:center;">Metas <?php echo isset($_POST['metas_cumplidas'])?"cumplidas ":""; echo isset($_GET['idBuscado'])?"de ".$user:"";?></h1>
           <?php
           $contadorMetas=0;
           while ($arreglo=mysqli_fetch_array($resultadoMetas)) {
