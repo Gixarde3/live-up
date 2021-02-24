@@ -157,8 +157,8 @@
             <p>Configuración</p>
           </div>
         </div>
-        <div class="metas" id=metas>
-          <a href="../<?php echo isset($_GET['idBuscado'])?"?idBuscado=".$_GET['idBuscado']:"" ?>" style="width:100%; display: flex; justify-content: space-around;"><h2 style="width:40%; display: flex; align-items:center;">Tareas de: <?php echo $texto_meta ?><?php echo isset($_GET['idBuscado'])?" de ".$user:""; ?> <img src="../images/hogar.svg" alt="" style="width: 8%; margin-left: 5px;"></h2>  </a>
+        <div class="metas" id=metas style="display:block;">
+          <a class="hiper" href="../<?php echo isset($_GET['idBuscado'])?"?idBuscado=".$_GET['idBuscado']:"" ?>"><h2>Tareas de: <?php echo $texto_meta ?><?php echo isset($_GET['idBuscado'])?" de ".$user:""; ?></h2><img src="../images/hogar.svg" alt=""></a>
           <?php
           $porcentaje_ocupado=0;
           $contadorTareas=0;
