@@ -377,6 +377,14 @@ width: 100%;
 .perfil-encontrado{
   position:bottom;
 }
+.espacio{
+  display: flex;
+  justify-content: space-between;
+  width:80%;
+}
+.espacio p{
+  width: 45%;
+}
 /*Moviles*/
 @media screen and (max-width: 768px) {
   body{
@@ -435,6 +443,20 @@ width: 100%;
   .metas{
     position: relative;
     z-index: 6;
+  }
+  .moviles{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+  .espacio{
+    width: 100%;
+  }
+  .botones-tarea{
+    width:100%;
+  }
+  .linea-tarea{
+    margin-bottom: 20px;
   }
 }
 @media screen and (max-width: 600px) {

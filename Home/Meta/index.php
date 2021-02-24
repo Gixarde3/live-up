@@ -165,7 +165,7 @@
           while($tareas=mysqli_fetch_array($resultado)){
             echo"<div class='meta tarea'>";
             if($tareas[3]==1){
-              echo "<div class='linea linea-tarea' style='justify-content: space-around;'><div style='display: flex; justify-content: space-between; width: 80%;'><p style='color: #43df30;'>".$tareas[4]."</p><p style='color: #43df30;'>Esta tarea otorgó ".$tareas[5]."% a la meta</p></div>";
+              echo "<div class='linea linea-tarea moviles' style='justify-content: space-around;'><div class='espacio'><p style='color: #43df30;'>".$tareas[4]."</p><p style='color: #43df30;'>Esta tarea otorgó ".$tareas[5]."% a la meta</p></div>";
               if(!isset($_GET['idBuscado'])){
                 echo "<div class='botones-tarea'><button class='meta-boton' type='button' name='cumplir' onclick='crear(5, ".$tareas[0].")'> <img src='../images/seleccione.svg' alt='Cumplir meta' class='cumplir'></button><button class='meta-boton' type='button' name='editar' onclick='crear(2, ".$tareas[0].")'> <img src='../images/editar.svg' alt='Editar meta'></button><button class='meta-boton' type='button' name='eliminar' onclick='crear(3, ".$tareas[0].")''> <img src='../images/eliminar.svg' alt='Eliminar meta'></button></div>";
               }else{
@@ -173,7 +173,7 @@
               }
               echo "</div></div>";
             }else{
-              echo "<div class='linea linea-tarea' style='justify-content: space-around';><div style='display: flex; justify-content: space-between; width: 80%;'><p>".$tareas[4]."</p><p>Esta tarea otorga ".$tareas[5]."% a la meta</p></div>";
+              echo "<div class='linea linea-tarea moviles' style='justify-content: space-around;'><div class='espacio'><p>".$tareas[4]."</p><p>Esta tarea otorgó ".$tareas[5]."% a la meta</p></div>";
               if(!isset($_GET['idBuscado'])){
                 echo "<div class='botones-tarea'><button class='meta-boton' type='button' name='cumplir' onclick='crear(4, ".$tareas[0].")'> <img src='../images/seleccione.svg' alt='Cumplir meta'></button><button class='meta-boton' type='button' name='editar' onclick='crear(2, ".$tareas[0].")'> <img src='../images/editar.svg' alt='Editar meta'></button><button class='meta-boton' type='button' name='eliminar' onclick='crear(3, ".$tareas[0].")''> <img src='../images/eliminar.svg' alt='Eliminar meta'></button></div>";
               }else{
