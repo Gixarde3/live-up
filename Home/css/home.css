@@ -269,7 +269,6 @@ width: 100%;
   margin-bottom: 20px;
 }
 .botones{
-  width: 70%;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -393,6 +392,17 @@ width: 100%;
 .espacio p{
   width: 45%;
 }
+.hiper img{
+  width: 5%;
+}
+.hiper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.metas{
+  overflow-y: hidden;
+}
 /*Moviles*/
 @media screen and (max-width: 768px) {
   body{
@@ -436,8 +446,8 @@ width: 100%;
     width: 80%; margin-top: 50px;
   }
   .cerrar{
-    left: 85%;
-    width: 15%;
+    left: 90%;
+    width: 10%;
   }
   .cerrar img{
     width: 100%;
@@ -451,6 +461,7 @@ width: 100%;
   .metas{
     position: relative;
     z-index: 6;
+    overflow-y: scroll;
   }
   .moviles{
     display: flex;
@@ -465,11 +476,6 @@ width: 100%;
   }
   .linea-tarea{
     margin-bottom: 20px;
-  }
-  .hiper{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
   .hiper img{
     width: 20%;

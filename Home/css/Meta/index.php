@@ -51,7 +51,7 @@
       }
     $id_meta=$_GET['id_meta'];
     $hash=$_GET['hash'];
-    $sql="SELECT * FROM metas WHERE id_meta='$id_meta' AND hash='$hash'";
+    $sql="SELECT * FROM metas_".$id_usu." WHERE id_meta='$id_meta' AND hash='$hash'";
     $resultadoDeLaMeta=mysqli_query($con, $sql);
     while($obj=mysqli_fetch_object($resultadoDeLaMeta)){
       $texto_meta=$obj->texto_meta;
@@ -89,13 +89,13 @@
         $metaMadre=$obj->meta_madre;
         $porcentajeAnadir=$obj->porcentaje;
       }
-      $sql="SELECT * FROM metas WHERE id_meta='$metaMadre'";
+      $sql="SELECT * FROM metas_".$id_usu." WHERE id_meta='$metaMadre'";
       $result=mysqli_query($con, $sql);
       while ($obj=mysqli_fetch_object($result)) {
         $porcentaje=$obj->porcentaje;
       }
       $porcentajeFinal=$porcentaje+$porcentajeAnadir;
-      $sql="UPDATE metas SET porcentaje='$porcentajeFinal' WHERE id_meta='$metaMadre'";
+      $sql="UPDATE metas_".$id_usu." SET porcentaje='$porcentajeFinal' WHERE id_meta='$metaMadre'";
       $result=mysqli_query($con, $sql);
       $_SESSION['recargar']=true;
       $_SESSION['tareaRealizando']=$_GET['id_meta'];

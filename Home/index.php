@@ -58,7 +58,7 @@ if(isset($_SESSION['recargar'])){
       }
     if(isset($_POST['anadir'])){
       $meta=$_POST['metaNueva'];
-      $checarNoRepetida="SELECT * FROM metas_".$id_usu." WHERE texto_meta='$meta'";
+      $checarNoRepetida="SELECT * FROM metas WHERE texto_meta='$meta' AND id_padre='$id_usu'";
       $checarMeta=mysqli_query($con, $checarNoRepetida);
       $counter=0;
       while($obj=mysqli_fetch_object($checarMeta)){
@@ -66,26 +66,26 @@ if(isset($_SESSION['recargar'])){
       }
       if($counter<1){
         $hash = md5( rand(0,1000) );
-        $anadirMeta="INSERT INTO metas_".$id_usu." (texto_meta, hash) VALUES ('$meta', '$hash')";
+        $anadirMeta="INSERT INTO metas(id_padre, texto_meta, hash) VALUES ('$id_usu','$meta', '$hash')";
         mysqli_query($con, $anadirMeta);
       }
     }
     if(isset($_POST['editar'])){
       $metaEditada=$_POST['metaEditada'];
       $id_meta=$_POST['id_meta_editar'];
-      $sql="UPDATE metas_".$id_usu." SET texto_meta='$metaEditada' WHERE id_meta='$id_meta'";
+      $sql="UPDATE metas SET texto_meta='$metaEditada' WHERE id_meta='$id_meta'";
       mysqli_query($con, $sql);
     }
     if(isset($_POST['eliminar'])){
       $id_meta=$_POST['id_meta_eliminar'];
-      $sql="DELETE FROM metas_".$id_usu." WHERE id_meta='$id_meta'";
+      $sql="DELETE FROM metas WHERE id_meta='$id_meta'";
       mysqli_query($con,$sql);
     }
-    $consultarMetas="SELECT * FROM metas_".$id_usu.";";
+    $consultarMetas="SELECT * FROM metas WHERE id_padre='$id_usu'";
     $resultadoMetas=mysqli_query($con,$consultarMetas);
     $cumplida=1;
     $por=100;
-    $sql="UPDATE metas_".$id_usu." SET cumplida='$cumplida' WHERE porcentaje='$por'";
+    $sql="UPDATE metas SET cumplida='$cumplida' WHERE porcentaje='$por'";
     mysqli_query($con,$sql);
     ?>
     <div class="principal">
@@ -150,8 +150,8 @@ if(isset($_SESSION['recargar'])){
             if($arreglo['cumplida']!=1&&!isset($_POST['metas_cumplidas'])){
               echo"<div class='meta'>";
               $extra=isset($_GET['idBuscado'])?"&idBuscado=".$_GET['idBuscado']:"";
-              echo "<a href='../Home/Meta/?id_meta=".$arreglo[0]."&hash=".$arreglo[4]."".$extra."'>".$arreglo[1]." <img src='../Home/images/portapapeles.svg' alt='' style='width:5%;'> </a>";
-              echo "<div class='linea linea-meta'><div class='barra-porcentaje meta-barra'><span class='porcentaje' style='width: ".$arreglo[3]."%'></span></div><p>".$arreglo[3]."%</p>";
+              echo "<a href='../Home/Meta/?id_meta=".$arreglo['id_meta']."&hash=".$arreglo['hash']."".$extra."'>".$arreglo['texto_meta']." <img src='../Home/images/portapapeles.svg' alt='' style='width:5%;'> </a>";
+              echo "<div class='linea linea-meta'><div class='barra-porcentaje meta-barra'><span class='porcentaje' style='width: ".$arreglo['porcentaje']."%'></span></div><p>".$arreglo['porcentaje']."%</p>";
               if(!isset($_GET['idBuscado'])){
               echo "<button class='meta-boton' type='button' name='editar' onclick='crear(2, ".$arreglo[0].")'> <img src='images/editar.svg' alt='Editar meta'></button><button class='meta-boton' type='button' name='eliminar' onclick='crear(3, ".$arreglo[0].")''> <img src='images/eliminar.svg' alt='Eliminar meta'></button>";
               }
@@ -161,8 +161,8 @@ if(isset($_SESSION['recargar'])){
               if($arreglo['cumplida']==1&&isset($_POST['metas_cumplidas'])){
                 echo"<div class='meta'>";
                 $extra=isset($_GET['idBuscado'])?"&idBuscado=".$_GET['idBuscado']:"";
-                echo "<a href='../Home/Meta/?id_meta=".$arreglo[0]."&hash=".$arreglo[4]."".$extra."'>".$arreglo[1]." <img src='../Home/images/portapapeles.svg' alt='' style='width:5%;'> </a>";
-                echo "<div class='linea linea-meta'><div class='barra-porcentaje meta-barra'><span class='porcentaje' style='width: ".$arreglo[3]."%'></span></div><p>".$arreglo[3]."%</p>";
+                echo "<a href='../Home/Meta/?id_meta=".$arreglo['id_meta']."&hash=".$arreglo['hash']."".$extra."'>".$arreglo['texto_meta']." <img src='../Home/images/portapapeles.svg' alt='' style='width:5%;'> </a>";
+                echo "<div class='linea linea-meta'><div class='barra-porcentaje meta-barra'><span class='porcentaje' style='width: ".$arreglo['porcentaje']."%'></span></div><p>".$arreglo['porcentaje']."%</p>";
                 if(!isset($_GET['idBuscado'])){
                 echo "<button class='meta-boton' type='button' name='editar' onclick='crear(2, ".$arreglo[0].")'> <img src='images/editar.svg' alt='Editar meta'></button><button class='meta-boton' type='button' name='eliminar' onclick='crear(3, ".$arreglo[0].")''> <img src='images/eliminar.svg' alt='Eliminar meta'></button>";
                 }
@@ -174,9 +174,9 @@ if(isset($_SESSION['recargar'])){
           if ($contadorMetas==0) {
             if(!isset($_POST['metas_cumplidas'])){
               if(isset($_GET['idBuscado'])){
-                echo "<h2>¡Parece que ".$user." no tiene ninuna meta pendiente!</h2><h2>¡Dile que añada una!</h2>";
+                echo "<h2 style='width: 100%; text-align center;'>¡Parece que ".$user." no tiene ninuna meta pendiente!</h2><h2>¡Dile que añada una!</h2>";
               }else{
-                echo "<h2>¡Parece que no tienes ninguna meta pendiente!</h2><h2>Añade una:</h2><form action='' method='post'><input class='metaNueva' type='text' name='metaNueva' placeholder='Ingresa una meta' required><input class='anadirBoton' type='submit' value='Añadir' name='anadir'></form>";
+                echo "<h2 style='width: 100%; text-align center;'>¡Parece que no tienes ninguna meta pendiente!</h2><h2 style='width: 100%; text-align center;'>Añade una:</h2><form action='' method='post' style='width: 100%; display: flex; flex-direction: column; justify-content: space-around'><input class='metaNueva' type='text' name='metaNueva' placeholder='Ingresa una meta' required><input class='anadirBoton' type='submit' value='Añadir' name='anadir'></form>";
               }
             }
           }
@@ -187,11 +187,11 @@ if(isset($_SESSION['recargar'])){
                 <button type="button" name="crear" onclick="crear(1,0)"> <img src="images/anadir.svg" alt="Crear meta"> <p>Crear</p></button>
               </div>
             <?php endif; ?>
-            <?php if (isset($_GET['idBuscado'])): ?>
-              <div class="botones">
-                <a href="../Home" style="align-items:center; width: 20%; text-align: center;"><img src="images/hogar.svg" alt="Regresar a mi perfil">Regresar a mi perfil</a>
-              </div>
-            <?php endif; ?>
+          <?php endif; ?>
+          <?php if (isset($_GET['idBuscado'])): ?>
+            <div class="botones">
+              <a href="../Home" style="align-items:center; width: 20%; text-align: center;"><img src="images/hogar.svg" alt="Regresar a mi perfil">Regresar a mi perfil</a>
+            </div>
           <?php endif; ?>
           <?php if ($contadorCumplidas<1&&isset($_POST['metas_cumplidas'])): ?>
             <?php if (isset($_GET['idBuscado'])): ?>
@@ -201,12 +201,12 @@ if(isset($_SESSION['recargar'])){
               <h2>¡Parece que no has cumplido ninguna meta!</h2>
             <?php endif; ?>
           <?php endif; ?>
-          <form action="" method="post" class="boton-abajo">
+          <form action="" method="post" class="boton-abajo" style="width: 100%;">
             <?php if (!isset($_POST['metas_cumplidas'])): ?>
-              <input type="submit" name="metas_cumplidas" value="Ver metas cumplidas" style="width: 100%; text-align: center;">
+              <input type="submit" name="metas_cumplidas" value="Ver metas cumplidas" style="text-align: center;">
             <?php endif; ?>
             <?php if (isset($_POST['metas_cumplidas'])): ?>
-              <input type="submit" name="metas_pendientes" value="Ver metas pendientes" style="width: 100%; text-align: center;">
+              <input type="submit" name="metas_pendientes" value="Ver metas pendientes" style="text-align: center;">
             <?php endif; ?>
           </form>
         </div>

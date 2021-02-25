@@ -63,8 +63,6 @@
               $id_usu=$obj->idusuario;
               echo "hecho";
             }
-            $generarTabla="CREATE TABLE metas_"."$id_usu"."(id_meta int(3) NOT NULL AUTO_INCREMENT, texto_meta varchar(255), cumplida int(1) NOT NULL DEFAULT '0', porcentaje int(2) NOT NULL DEFAULT '0', hash varchar(32) NOT NULL, puntaje int(5) NOT NULL DEFAULT '0', PRIMARY KEY(id_meta));";
-            mysqli_query($con, $generarTabla);
             $generarAmigos="CREATE TABLE amigos_"."$id_usu"."(id_amigo int(5) NOT NULL, PRIMARY KEY(id_amigo));";
             mysqli_query($con, $generarAmigos);
             while ($obj = mysqli_fetch_object($res)) {
