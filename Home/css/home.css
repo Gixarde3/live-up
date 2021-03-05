@@ -266,6 +266,8 @@ width: 100%;
 }
 .linea-meta{
   width: 100%;
+}
+meta p{
   margin-bottom: 20px;
 }
 .botones{
@@ -403,6 +405,9 @@ width: 100%;
 .metas{
   overflow-y: hidden;
 }
+.imagen-metas{
+  width: 2%;
+}
 /*Moviles*/
 @media screen and (max-width: 768px) {
   body{
@@ -482,6 +487,9 @@ width: 100%;
   }
   .metas h2{
     width: 80%;
+  }
+  .imagen-metas{
+    width: 6%;
   }
 }
 @media screen and (max-width: 600px) {
