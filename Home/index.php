@@ -1,4 +1,6 @@
 <?php session_start();
+//Verifica si no estás recargando para alguna meta.
+//Esto porque la recarga se hacía demasiado rápido y no se mostraban los datos actualizados.
 if(isset($_SESSION['recargar'])){
   if($_SESSION['recargar']){
     $_SESSION['recargar']=false;
@@ -17,6 +19,7 @@ if(isset($_SESSION['recargar'])){
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="css/home.css">
     <meta charset="utf-8">
+    <!-- Verifica si se está cargando la página con un usuario logeado-->
     <title>Metas -
       <?php if (isset($_SESSION['usuario'])):
         echo $_SESSION['usuario'];
@@ -24,6 +27,7 @@ if(isset($_SESSION['recargar'])){
     <?php else: ?>
       <script type="text/javascript">window.location="/";</script>
     <?php endif; ?>
+    <!-- De lo contrario, simplemente te regrsa a la página inicial. -->
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
   </head>
   <body>
@@ -60,11 +64,11 @@ if(isset($_SESSION['recargar'])){
       $meta=$_POST['metaNueva'];
       $checarNoRepetida="SELECT * FROM metas WHERE texto_meta='$meta' AND id_padre='$id_usu'";
       $checarMeta=mysqli_query($con, $checarNoRepetida);
-      $counter=0;
+      $existeMeta=false;
       while($obj=mysqli_fetch_object($checarMeta)){
-        $counter++;
+        $existeMeta=true;
       }
-      if($counter<1){
+      if(!$existeMeta){
         $hash = md5( rand(0,1000) );
         $anadirMeta="INSERT INTO metas(id_padre, texto_meta, hash) VALUES ('$id_usu','$meta', '$hash')";
         mysqli_query($con, $anadirMeta);
@@ -216,6 +220,15 @@ if(isset($_SESSION['recargar'])){
         <div class="crear-meta" id=crear-meta>
         </div>
     </div>
+    <?php
+    if(isset($existeMeta)){
+      if($existeMeta){
+        echo "  <script type='text/javascript'>".
+                  "crear(10,0);".
+                "</script>";
+      }
+    }
+      ?>
     <canvas id="stars"></canvas>
     <script src="../js/fondo.js"></script>
   </body>

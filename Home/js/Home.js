@@ -92,6 +92,17 @@ async function abrir(){
       case 9:
       document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'><img src='../images/cerrar.svg' alt='Cerrar'></button><h2 id=titulo>¿Estás seguro de eliminar esta tarea?</h2><form action='' method='post'><input type='text' name='id_tarea_eliminar' value='"+id_meta+"' style='display: none;'> <div class='linea'><input class='anadirBoton' type='submit' value='Sí' name='eliminar' value='eliminar' id=titulo><button type='button' name='no' onclick='minimizar()' class='no'><p>No</p></button></div></form>";
       break;
+      case 10:
+      document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'>"+
+        "<img src='images/cerrar.svg' alt='Cerrar'>"+
+      "</button>"+
+      "<h2 id=titulo>¡Parece que quieres añadir una tarea que ya existe!</h2>"+
+      "<h3>Intenta de nuevo con otra meta.</h3>"+
+      "<form>"+
+      "<button type='button' onclick=crear(1,0) class='no'><p>Intentar de nuevo</p></button>"+
+      "</form>"
+      break;
+
     }
     document.getElementById('fondo-abrido').style='display: block; z-index:7;';
     console.log("Por alguna razón, no se actualiza en el servidor");

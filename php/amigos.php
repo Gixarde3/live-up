@@ -8,7 +8,16 @@ function listarAmigos($id_usu, $con){
     $sql="SELECT * FROM users WHERE idusuario='$amigo[0]'";
     $amigoResultante=mysqli_query($con, $sql);
     while ($resultado=mysqli_fetch_object($amigoResultante)) {
-      echo "<li><p>".$resultado->usuario."</p><div class='barra-porcentaje meta-barra'><span class='porcentaje' style='width: ".$resultado->porcentaje_nivel."%'></span></div><div class='linea'><p>Nv: ".$resultado->nivel."</p><p>".$resultado->porcentaje_nivel."%</p></div></li>";
+      echo "<li>".
+        "<p>".$resultado->usuario."</p>"."
+        <div class='barra-porcentaje meta-barra'>".
+          "<span class='porcentaje' style='width: ".$resultado->porcentaje_nivel."%'></span>".
+        "</div>".
+        "<div class='linea'>".
+          "<p>Nv: ".$resultado->nivel."</p>".
+          "<p>".$resultado->porcentaje_nivel."%</p>".
+        "</div>".
+      "</li>";
       $contadorAmigos++;
     }
   }
