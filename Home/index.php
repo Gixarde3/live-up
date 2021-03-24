@@ -155,23 +155,60 @@ if(isset($_SESSION['recargar'])){
             if($arreglo['cumplida']!=1&&!isset($_POST['metas_cumplidas'])){
               echo"<div class='meta'>";
               $extra=isset($_GET['idBuscado'])?"&idBuscado=".$_GET['idBuscado']:"";
-              echo "<a href='../Home/Meta/?id_meta=".$arreglo['id_meta']."&hash=".$arreglo['hash']."".$extra."'>".$arreglo['texto_meta']." <img class='imagen-metas' src='../Home/images/portapapeles.svg' alt=''> </a>";
-              echo "<div class='linea linea-meta'><div class='barra-porcentaje meta-barra'><span class='porcentaje' style='width: ".$arreglo['porcentaje']."%'></span></div><p>".$arreglo['porcentaje']."%</p>";
+              echo "<a href='../Home/Meta/?id_meta=".$arreglo['id_meta']."&hash=".$arreglo['hash'].$extra."'>".
+                $arreglo['texto_meta']."<img class='imagen-metas' src='../Home/images/portapapeles.svg' alt=''>
+              </a>";
+              echo "<div class='linea linea-meta'>".
+                "<div class='barra-porcentaje meta-barra'>".
+                  "<span class='porcentaje' style='width: ".$arreglo['porcentaje']."%'></span>".
+                  "</div>".
+                  "<p>".$arreglo['porcentaje']."%</p>";
               if(!isset($_GET['idBuscado'])){
-              echo "<button class='meta-boton' type='button' name='editar' onclick='crear(2, ".$arreglo[0].")'> <img src='images/editar.svg' alt='Editar meta'></button><button class='meta-boton' type='button' name='eliminar' onclick='crear(3, ".$arreglo[0].")''> <img src='images/eliminar.svg' alt='Eliminar meta'></button></div>";
+              echo "<button class='meta-boton' type='button' name='editar' onclick='crear(2, ".$arreglo[0].")'>".
+                "<img src='images/editar.svg' alt='Editar meta'>".
+                "</button>".
+                "<button class='meta-boton' type='button' name='eliminar' onclick='crear(3, ".$arreglo[0].")''>".
+                  "<img src='images/eliminar.svg' alt='Eliminar meta'>".
+                "</button>".
+              "</div>";
               }
-              echo "<p style='width: 100%; text-align: right;'>";if($arreglo['calificada']==1){echo $arreglo['puntos']." pts.";}else{echo "La meta aún está siendo calificada.";} echo "</p></div>";
+              echo "<p style='width: 100%; text-align: right;'>";
+              if($arreglo['calificada']==1){
+                echo $arreglo['puntos']." pts.";
+              }else{
+                echo "La meta aún está siendo calificada.";
+              }
+              echo "</p></div>";
               $contadorMetas++;
             }else{
               if($arreglo['cumplida']==1&&isset($_POST['metas_cumplidas'])){
                 echo"<div class='meta'>";
                 $extra=isset($_GET['idBuscado'])?"&idBuscado=".$_GET['idBuscado']:"";
-                echo "<a href='../Home/Meta/?id_meta=".$arreglo['id_meta']."&hash=".$arreglo['hash']."".$extra."'>".$arreglo['texto_meta']." <img class='imagen-metas' src='../Home/images/portapapeles.svg' alt='' style='width:5%;'> </a>";
-                echo "<div class='linea linea-meta'><div class='barra-porcentaje meta-barra'><span class='porcentaje' style='width: ".$arreglo['porcentaje']."%'></span></div><p>".$arreglo['porcentaje']."%</p>";
+                echo "<a href='../Home/Meta/?id_meta=".$arreglo['id_meta']."&hash=".$arreglo['hash']."".$extra."'>"
+                  .$arreglo['texto_meta'].
+                  "<img class='imagen-metas' src='../Home/images/portapapeles.svg' alt='' style='width:5%;'>".
+                "</a>";
+                echo "<div class='linea linea-meta'>".
+                "<div class='barra-porcentaje meta-barra'>".
+                  "<span class='porcentaje' style='width: ".$arreglo['porcentaje']."%'></span>".
+                "</div>".
+                "<p>".$arreglo['porcentaje']."%</p>";
                 if(!isset($_GET['idBuscado'])){
-                echo "<button class='meta-boton' type='button' name='editar' onclick='crear(2, ".$arreglo[0].")'> <img src='images/editar.svg' alt='Editar meta'></button><button class='meta-boton' type='button' name='eliminar' onclick='crear(3, ".$arreglo[0].")''> <img src='images/eliminar.svg' alt='Eliminar meta'></button></div>";
+                  echo "<button class='meta-boton' type='button' name='editar' onclick='crear(2, ".$arreglo[0].")'>".
+                      "<img src='images/editar.svg' alt='Editar meta'>
+                    </button>".
+                    "<button class='meta-boton' type='button' name='eliminar' onclick='crear(3, ".$arreglo[0].")''>".
+                      "<img src='images/eliminar.svg' alt='Eliminar meta'>
+                    </button>".
+                  "</div>";
                 }
-                echo "<p style='width: 100%; text-align: right;'>";if($arreglo['calificada']==1){echo $arreglo['puntos']." pts.";}else{echo "La meta aún está siendo calificada.";} echo "</p></div>";
+                echo "<p style='width: 100%; text-align: right;'>";
+                if($arreglo['calificada']==1){
+                  echo $arreglo['puntos']." pts.";
+                }else{
+                  echo "La meta aún está siendo calificada.";
+                }
+                echo "</p></div>";
                 $contadorCumplidas++;
               }
             }
@@ -179,9 +216,20 @@ if(isset($_SESSION['recargar'])){
           if ($contadorMetas==0) {
             if(!isset($_POST['metas_cumplidas'])){
               if(isset($_GET['idBuscado'])){
-                echo "<h2 style='width: 100%; text-align center;'>¡Parece que ".$user." no tiene ninuna meta pendiente!</h2><h2>¡Dile que añada una!</h2>";
+                echo "<h2 style='width: 100%; text-align center;'>".
+                "¡Parece que ".$user." no tiene ninuna meta pendiente!</h2>".
+                "<h2>¡Dile que añada una!</h2>";
               }else{
-                echo "<h2 style='width: 100%; text-align center;'>¡Parece que no tienes ninguna meta pendiente!</h2><h2 style='width: 100%; text-align center;'>Añade una:</h2><form action='' method='post' style='width: 100%; display: flex; flex-direction: column; justify-content: space-around'><input class='metaNueva' type='text' name='metaNueva' placeholder='Ingresa una meta' required><input class='anadirBoton' type='submit' value='Añadir' name='anadir'></form>";
+                echo "<h2 style='width: 100%; text-align center;'>".
+                  "¡Parece que no tienes ninguna meta pendiente!".
+                "</h2>".
+                "<h2 style='width: 100%; text-align center;'>".
+                  "Añade una:".
+                "</h2>".
+                "<form action='' method='post' style='width: 100%; display: flex; flex-direction: column; justify-content: space-around'>".
+                  "<input class='metaNueva' type='text' name='metaNueva' placeholder='Ingresa una meta' required>".
+                  "<input class='anadirBoton' type='submit' value='Añadir' name='anadir'>".
+                "</form>";
               }
             }
           }
