@@ -2,7 +2,9 @@
 if(isset($_SESSION['recargar'])){
   if($_SESSION['recargar']){
     $_SESSION['recargar']=false;
-    echo "<script type='text/javascript'>window.location='../Home/Meta/?id_meta=".$_SESSION['tareaRealizando']."&hash=".$_SESSION['hash']."';</script>";
+    echo "<script type='text/javascript'>window.location='../Home/Meta/?id_meta=".
+    $_SESSION['tareaRealizando']."&hash=".
+    $_SESSION['hash']."';</script>";
   }
 }
 ?>
@@ -15,15 +17,13 @@ if(isset($_SESSION['recargar'])){
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="css/home.css">
     <meta charset="utf-8">
-    <title>Metas - <?php
-    if(isset($_SESSION['usuario'])){
-      echo $_SESSION['usuario'].' </title>';
-    }
-    else{
-      echo 'Redireccionando';
-      echo '</title><script type="text/javascript">window.location="/";</script>';
-    }
-    ?>
+    <title>Metas -
+      <?php if (isset($_SESSION['usuario'])):
+        echo $_SESSION['usuario'];
+      ?></title>
+    <?php else: ?>
+      <script type="text/javascript">window.location="/";</script>
+    <?php endif; ?>
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
   </head>
   <body>
@@ -143,7 +143,8 @@ if(isset($_SESSION['recargar'])){
           </div>
         </div>
         <div class="metas" id=metas style="display: block;">
-          <h1 style="width: 100%; text-align:center;">Metas <?php echo isset($_POST['metas_cumplidas'])?"cumplidas ":""; echo isset($_GET['idBuscado'])?"de ".$user:"";?></h1>
+          <h1 style="width: 100%; text-align:center;">Metas <?php echo isset($_POST['metas_cumplidas'])?"cumplidas ":"";
+           echo isset($_GET['idBuscado'])?"de ".$user:"";?></h1>
           <?php
           $contadorMetas=0;
           while ($arreglo=mysqli_fetch_array($resultadoMetas)) {
@@ -190,7 +191,8 @@ if(isset($_SESSION['recargar'])){
           <?php endif; ?>
           <?php if (isset($_GET['idBuscado'])): ?>
             <div class="botones">
-              <a href="../Home" style="align-items:center; width: 20%; text-align: center;"><img src="images/hogar.svg" alt="Regresar a mi perfil">Regresar a mi perfil</a>
+              <a href="../Home" style="align-items:center; width: 20%; text-align: center;">
+                <img src="images/hogar.svg" alt="Regresar a mi perfil">Regresar a mi perfil</a>
             </div>
           <?php endif; ?>
           <?php if ($contadorCumplidas<1&&isset($_POST['metas_cumplidas'])): ?>

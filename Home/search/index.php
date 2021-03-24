@@ -7,15 +7,13 @@
     <link rel="stylesheet" href="../../css/reset.css">
     <link rel="stylesheet" href="../css/home.css">
     <meta charset="utf-8">
-    <title>Búsqueda - <?php
-    if(isset($_SESSION['usuario'])){
-      echo $_SESSION['usuario'].' </title>';
-    }
-    else{
-      echo 'Redireccionando';
-      echo '</title><script type="text/javascript">window.location="/";</script>';
-    }
-    ?>
+    <title>Buscar -
+      <?php if (isset($_SESSION['usuario'])):
+        echo $_SESSION['usuario'];
+      ?></title>
+    <?php else: ?>
+      <script type="text/javascript">window.location="/";</script>
+    <?php endif; ?>
     <script type="text/javascript" src="../js/Home.js">
     </script>
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
