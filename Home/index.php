@@ -133,10 +133,10 @@ if(isset($_SESSION['recargar'])){
             <img src="images/trofeo.svg" alt="Leaderboards">
             <p>Leaderboards</p>
           </div>
-          <div class="opcion">
+          <a href="Calificar/" class="opcion">
             <img src="images/clasificacion.svg" alt="Calificar Metas">
             <p>Calificar metas</p>
-          </div>
+          </a>
           <div class="opcion configuracion" id="conf">
             <img src="images/configuraciones.svg" alt="Configuaración">
             <p>Configuración</p>
