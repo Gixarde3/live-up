@@ -69,7 +69,7 @@ async function abrir(){
       document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'><img src='images/cerrar.svg' alt='Cerrar'></button><h2 id=titulo>Añadir una meta:</h2><form action='' method='post'><input class='metaNueva' type='text' name='metaNueva' placeholder='Ingresa una tarea' required><input class='anadirBoton' type='submit' value='Añadir' name='anadir' id=titulo></form>";
       break;
       case 2:
-      document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'><img src='images/cerrar.svg' alt='Cerrar'></button><h2 id=titulo>Editar la meta:</h2><form action='' method='post'><input type='text' name='id_meta_editar' value='"+id_meta+"' style='display: none;'><input class='metaNueva' type='text' name='tareaEditada' placeholder='Ingresa una meta' required><input class='anadirBoton' type='submit' value='Editar' name='editar' id=titulo value='editar'></form>";
+      document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'><img src='images/cerrar.svg' alt='Cerrar'></button><h2 id=titulo>Editar la meta:</h2><form action='' method='post'><input type='text' name='id_meta_editar' value='"+id_meta+"' style='display: none;'><input class='metaNueva' type='text' name='metaEditada' placeholder='Ingresa una meta' required><input class='anadirBoton' type='submit' value='Editar' name='editar' id=titulo value='editar'></form>";
       break;
       case 3:
       document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'><img src='images/cerrar.svg' alt='Cerrar'></button><h2 id=titulo>¿Estás seguro de eliminar esta meta?</h2><form action='' method='post'><input type='text' name='id_meta_eliminar' value='"+id_meta+"' style='display: none;'> <div class='linea'><input class='anadirBoton' type='submit' value='Sí' name='eliminar' value='eliminar' id=titulo><button type='button' name='no' onclick='minimizar()' class='no'><p>No</p></button></div></form>";
@@ -102,7 +102,8 @@ async function abrir(){
       "<button type='button' onclick=crear(1,0) class='no'><p>Intentar de nuevo</p></button>"+
       "</form>"
       break;
-
+      case 11:
+      break;
     }
     document.getElementById('fondo-abrido').style='display: block; z-index:7;';
     console.log("Por alguna razón, no se actualiza en el servidor");

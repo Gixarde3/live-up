@@ -41,6 +41,25 @@
     $calificada=0;
     $sql="SELECT * FROM metas WHERE calificada='$calificada'";
     $res=mysqli_query($con, $sql);
+    function buscarUsuario($id_usuario,$con){
+      $sql="SELECT * FROM users WHERE idusuario='$id_usuario'";
+      $consulta=mysqli_query($con,$sql);
+      while($obj=mysqli_fetch_object($consulta)){
+        $nombre=$obj->usuario;
+      }
+      return $nombre;
+    }
+    if(isset($_POST['editar'])){
+      $metaEditada=$_POST['metaEditada'];
+      $id_meta=$_POST['id_meta_editar'];
+      $sql="UPDATE metas SET texto_meta='$metaEditada' WHERE id_meta='$id_meta'";
+      mysqli_query($con, $sql);
+    }
+    if(isset($_POST['eliminar'])){
+      $id_meta=$_POST['id_meta_eliminar'];
+      $sql="DELETE FROM metas WHERE id_meta='$id_meta'";
+      mysqli_query($con,$sql);
+    }
     ?>
     <div class="principal">
       <img src="../images/Fondo-abrido.png" alt="Fondo" class="fondo-abrido" id=fondo-abrido>
@@ -100,9 +119,26 @@
           <h2>Metas por calificar: </h2>
           <?php
           $contadorResultados=0;
-          while ($meta=mysqli_fetch_array($res)) {
+          while ($arreglo=mysqli_fetch_array($res)) {
             $contadorResultados++;
-            echo "<p>".$meta['texto_meta']."</p>";
+            echo"<div class='meta'>";
+            $extra=isset($_GET['idBuscado'])?"&idBuscado=".$_GET['idBuscado']:"";
+            echo "<a href='../Home/Meta/?id_meta=".$arreglo['id_meta']."&hash=".$arreglo['hash'].$extra."'>".
+            "<div style='width:100%;display:flex;justify-content: space-between;'>".
+              $arreglo['texto_meta'].
+              "<p>".buscarUsuario($arreglo['id_padre'],$con)."</p>".
+            "</div>".
+            "</a>";
+            echo "<div class='linea linea-meta'>".
+              "<div class='barra-porcentaje meta-barra'>".
+                "<span class='porcentaje' style='width: ".$arreglo['porcentaje']."%'></span>".
+                "</div>".
+                "<p>".$arreglo['porcentaje']."%</p>";
+            echo "<div style='width:100%; display:flex; justify-content:space-between;'>".
+                    "<p style='width: 50%; text-align: center;'>Calificado: ".$arreglo['cantidad_calificacion']." veces</p>".
+                    "<p style='width:50%; text-align:center;'>Puntos promedio: ".$arreglo['puntos']."</p>".
+                  "</div>";
+            echo "</div>";
           }
           ?>
           <?php if ($contadorResultados<1): ?>
