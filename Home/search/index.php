@@ -106,15 +106,21 @@
               "<a style='width: 30%;display:flex;align-items:center;flex-direction:column;justify-content:space-around;' href='../?idBuscado=".$usuario[0]."'>".
               $usuario[1]."</a>".
               "<div style='display: flex;width: 70%; flex-direction: column;justify-content: space-around; align-items:center'>".
-              "<div class='barra-porcentaje meta-barra'><span class='porcentaje' style='width: ".$usuario[9]."%'></span></div>".
-              "<div class='linea'><p>Nv: ".$usuario[8]."</p><p>".$usuario[9]."%</p></div>".
+                "<div class='barra-porcentaje meta-barra'>".
+                  "<span class='porcentaje' style='width: ".$usuario[9]."%'></span>".
+                "</div>".
+                "<div class='linea'>".
+                  "<p>Nv: ".$usario[8]."</p>".
+                  "<p>".$usuario[9]."%</p>".
+                "</div>".
               "</div>".
               "<form action='' method='post' style='width: 10%;'>".
-              "<input type='text' name='amigo_anadir' value='".$usuario[0]."' style='display:none;'>".
-              "<input class='".checarSiAmigo($id_usu, $usuario[0], $con)." amigos-anadir' type='image' name='anadirAmigo' value='simon' src=../images/".checarSiAmigo($id_usu,$usuario[0],$con).".svg>".
-              "</form>
-              "."</div></div>";
-              $contadorResultados++;
+                "<input type='text' name='amigo_anadir' value='".$usuario[0]."' style='display:none;'>".
+                "<input class='".checarSiAmigo($id_usu, $usuario[0], $con)." amigos-anadir' type='image' name='anadirAmigo' value='simon' src=../images/".checarSiAmigo($id_usu,$usuario[0],$con).".svg>".
+              "</form>".
+              "</div>
+            </div>";
+            $contadorResultados++;
             }
           }
           ?>
