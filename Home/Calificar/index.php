@@ -133,7 +133,7 @@
               "<div class='barra-porcentaje meta-barra'>".
                 "<span class='porcentaje' style='width: ".$arreglo['porcentaje']."%'></span>".
                 "</div>".
-                "<p>".$arreglo['porcentaje']."%</p>";
+                "<p>".$arreglo['porcentaje']."%</p></div>";
             echo "<div style='width:100%; display:flex; justify-content:space-between;'>".
                     "<p style='width: 50%; text-align: center;'>Calificado: ".$arreglo['cantidad_calificacion']." veces</p>".
                     "<p style='width:50%; text-align:center;'>Puntos promedio: ".$arreglo['puntos']."</p>".
