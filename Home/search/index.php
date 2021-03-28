@@ -110,7 +110,7 @@
                   "<span class='porcentaje' style='width: ".$usuario[9]."%'></span>".
                 "</div>".
                 "<div class='linea'>".
-                  "<p>Nv: ".$usario[8]."</p>".
+                  "<p>Nv: ".$usuario[8]."</p>".
                   "<p>".$usuario[9]."%</p>".
                 "</div>".
               "</div>".
