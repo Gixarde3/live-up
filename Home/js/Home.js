@@ -103,6 +103,21 @@ async function abrir(){
       "</form>"
       break;
       case 11:
+      var html_botones_generados="";
+      for(var i=1; i<=5;i++){
+        html_botones_generados+="<button class=btn_estrella  type='button' name='estrella_"+i+"' onclick='rellenar("+i+")'> <img id='btn"+i+"' src='../images/estrella.svg' alt='estrella'></button>";
+      }
+      document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'>"+
+      "<img src='../images/cerrar.svg' alt='Cerrar'></button>"+
+      "<h2 id=titulo>¡Califica esta meta!</h2>"+
+      "<form method='post'>"+
+      "<div class='linea_estrellas'>"+
+      html_botones_generados+
+      "</div>"+
+      "<input type='hidden' name='valor_estrellas' value='' id=valor>"+
+      "<input type='hidden' name='meta_calificar' value="+id_meta+">"+
+      "<input type='submit' name='enviar_estrellas' value='Enviar ⭐ de calificación'>"+
+      "</form>";
       break;
     }
     document.getElementById('fondo-abrido').style='display: block; z-index:7;';
@@ -118,5 +133,16 @@ async function abrir(){
     }
     if(document.getElementById('aclaracion')){
       document.getElementById('aclaracion').style='display: block;';
+    }
+  }
+  function rellenar(id_estrella_maxima){
+    document.getElementById('valor').value=id_estrella_maxima;
+    for (var i = 1; i <= 5; i++) {
+      var imagenCambiarSrc=document.getElementById('btn'+i);
+      imagenCambiarSrc.src="../images/estrella.svg";
+    }
+    for (var i = 1; i <= id_estrella_maxima; i++) {
+      var imagenCambiarSrc=document.getElementById('btn'+i);
+      imagenCambiarSrc.src="../images/estrella_llena.svg";
     }
   }

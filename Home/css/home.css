@@ -408,6 +408,16 @@ meta p{
 .imagen-metas{
   width: 2%;
 }
+.boton_calificar_incorporado img{
+  width: 50px;
+}
+.btn_estrella img{
+  width: 30px;
+}
+.linea_estrellas{
+  display: flex;
+  padding-bottom: 10px;
+}
 /*Moviles*/
 @media screen and (max-width: 768px) {
   body{

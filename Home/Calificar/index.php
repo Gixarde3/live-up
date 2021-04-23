@@ -60,6 +60,32 @@
       $sql="DELETE FROM metas WHERE id_meta='$id_meta'";
       mysqli_query($con,$sql);
     }
+    if(isset($_POST['enviar_estrellas'])){
+      $id_meta=$_POST['meta_calificar'];
+      $cantidad_estrellas=$_POST['valor_estrellas'];
+      $calificada=1;
+      $sql="SELECT * From metas WHERE id_meta='$id_meta'";
+      $consulta=mysqli_query($con,$sql);
+      while($obj=mysqli_fetch_object($consulta)){
+        $puntos=$obj->puntos;
+        $cantidad_calificada=$obj->cantidad_calificacion;
+      }
+      $puntosNuevos=$puntos+($cantidad_estrellas*10);
+      $cantidad_calificada++;
+      if($cantidad_calificada<=10){
+        $sql="UPDATE metas SET puntos='$puntosNuevos' WHERE id_meta='$id_meta'";
+        mysqli_query($con, $sql);
+        $sql="UPDATE metas SET cantidad_calificacion='$cantidad_calificada' WHERE id_meta='$id_meta'";
+        mysqli_query($con, $sql);
+      }
+      if($cantidad_calificada>=10){
+        $sql="UPDATE metas SET calificada='$calificada' WHERE id_meta='$id_meta'";
+        mysqli_query($con, $sql);
+      }
+      $promedio_puntos=$puntosNuevos/$cantidad_calificada;
+      $sql="UPDATE metas SET promedio_puntos='$promedio_puntos' WHERE id_meta='$id_meta'";
+      mysqli_query($con, $sql);
+    }
     ?>
     <div class="principal">
       <img src="../images/Fondo-abrido.png" alt="Fondo" class="fondo-abrido" id=fondo-abrido>
@@ -106,41 +132,50 @@
             <img src="../images/trofeo.svg" alt="Leaderboards">
             <p>Leaderboards</p>
           </div>
-          <div class="opcion">
+          <a href="" class="opcion">
             <img src="../images/clasificacion.svg" alt="Calificar Metas">
             <p>Calificar metas</p>
-          </div>
+          </a>
           <div class="opcion configuracion" id="conf">
             <img src="../images/configuraciones.svg" alt="Configuaración">
             <p>Configuración</p>
+
           </div>
+
         </div>
         <div class="metas" id=metas style="display:block;">
           <h2>Metas por calificar: </h2>
           <?php
           $contadorResultados=0;
-          while ($arreglo=mysqli_fetch_array($res)) {
-            $contadorResultados++;
-            echo"<div class='meta'>";
-            $extra=isset($_GET['idBuscado'])?"&idBuscado=".$_GET['idBuscado']:"";
-            echo "<a href='../Home/Meta/?id_meta=".$arreglo['id_meta']."&hash=".$arreglo['hash'].$extra."'>".
-            "<div style='width:100%;display:flex;justify-content: space-between;'>".
-              $arreglo['texto_meta'].
-              "<p>".buscarUsuario($arreglo['id_padre'],$con)."</p>".
-            "</div>".
-            "</a>";
-            echo "<div class='linea linea-meta'>".
-              "<div class='barra-porcentaje meta-barra'>".
-                "<span class='porcentaje' style='width: ".$arreglo['porcentaje']."%'></span>".
-                "</div>".
-                "<p>".$arreglo['porcentaje']."%</p></div>";
-            echo "<div style='width:100%; display:flex; justify-content:space-between;'>".
-                    "<p style='width: 50%; text-align: center;'>Calificado: ".$arreglo['cantidad_calificacion']." veces</p>".
-                    "<p style='width:50%; text-align:center;'>Puntos promedio: ".$arreglo['puntos']."</p>".
-                  "</div>";
-            echo "</div>";
-          }
+          while($arreglo=mysqli_fetch_array($res)):
           ?>
+          <div class="meta">
+            <?php
+            $contadorResultados++;
+            $extra=isset($_GET['idBuscado'])?"&idBuscado=".$_GET['idBuscado']:"";
+            ?>
+            <a href="../Meta/?id_meta=<?php echo $arreglo['id_meta'] ?>&hash=<?php echo $arreglo['hash'].$extra ?>">
+              <div style='width:100%;display:flex;justify-content: space-between;'>
+                <?php echo  $arreglo['texto_meta']; ?>
+                <p> <?php echo buscarUsuario($arreglo['id_padre'],$con); ?></p>
+              </div>
+            </a>
+            <div class='linea linea-meta'>
+              <div class='barra-porcentaje meta-barra'>
+                <span class='porcentaje' style="width: <?php echo $arreglo['porcentaje']; ?>%"></span>
+              </div>
+              <p><?php echo $arreglo['porcentaje'] ?>%</p>
+              <button class="boton_calificar_incorporado" type="button" name="button" onclick="crear(11,<?php echo $arreglo['id_meta']; ?>)"> <img src="../images/clasificacion.svg" alt="Calificar esta meta"> </button>
+            </div>
+              <div style='width:100%; display:flex; justify-content:space-between;'>
+                <p style='width: 50%; text-align: center;'>Calificado:<?php  echo $arreglo['cantidad_calificacion'];?>  veces</p>
+                <p style='width:50%; text-align:center;'>Puntos promedio: <?php echo $arreglo['promedio_puntos']; ?></p>
+              </div>
+
+            </div>
+          <?php
+            endwhile;
+           ?>
           <?php if ($contadorResultados<1): ?>
             <h3>Al parecer no hay metas que puedas calificar.</h3>
             <h3>¡Parece que tendrás que esperar un poco!.</h3>

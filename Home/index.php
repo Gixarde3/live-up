@@ -174,7 +174,7 @@ if(isset($_SESSION['recargar'])){
               }
               echo "<p style='width: 100%; text-align: right;'>";
               if($arreglo['calificada']==1){
-                echo $arreglo['puntos']." pts.";
+                echo $arreglo['promedio_puntos']." pts.";
               }else{
                 echo "La meta aún está siendo calificada.";
               }
@@ -204,7 +204,7 @@ if(isset($_SESSION['recargar'])){
                 }
                 echo "<p style='width: 100%; text-align: right;'>";
                 if($arreglo['calificada']==1){
-                  echo $arreglo['puntos']." pts.";
+                  echo $arreglo['promedio_puntos']." pts.";
                 }else{
                   echo "La meta aún está siendo calificada.";
                 }
