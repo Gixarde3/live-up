@@ -12,7 +12,7 @@
         echo $_SESSION['usuario'];
       ?></title>
     <?php else: ?>
-      <script type="text/javascript">window.location="/";</script>
+      </title><script type="text/javascript">window.location="/";</script>
     <?php endif; ?>
     <script type="text/javascript" src="../js/Home.js">
     </script>
