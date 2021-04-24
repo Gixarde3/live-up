@@ -130,7 +130,7 @@
             <button class="abrir" type="button" name="abrir" onclick="abrir()"> <img src="../images/proximo.svg" alt="Abrir" id=flecha> </button>
           </div>
           <div class="social-desplegado" id=desplegar>
-            <form class="buscar" action="search/" method="get">
+            <form class="buscar" action="../search" method="get">
               <p>Buscar amigo: </p>
               <input type="text" name="buscar" placeholder="Escribe el usuario" class="buscar">
               <input type="submit" value="Buscar">
