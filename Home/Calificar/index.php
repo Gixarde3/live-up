@@ -36,6 +36,7 @@
       $active=$obj->estado;
       $verificada=$obj->verificada;
       $nivel=$obj->nivel;
+      $puntos=$obj->puntaje;
       $porcentaje=$obj->porcentaje_nivel;
     }
     $calificada=0;
@@ -67,10 +68,10 @@
       $sql="SELECT * From metas WHERE id_meta='$id_meta'";
       $consulta=mysqli_query($con,$sql);
       while($obj=mysqli_fetch_object($consulta)){
-        $puntos=$obj->puntos;
+        $puntosActuales=$obj->puntos;
         $cantidad_calificada=$obj->cantidad_calificacion;
       }
-      $puntosNuevos=$puntos+($cantidad_estrellas*10);
+      $puntosNuevos=$puntosActuales+($cantidad_estrellas*10);
       $cantidad_calificada++;
       if($cantidad_calificada<=10){
         $sql="UPDATE metas SET puntos='$puntosNuevos' WHERE id_meta='$id_meta'";
@@ -85,6 +86,18 @@
       $promedio_puntos=$puntosNuevos/$cantidad_calificada;
       $sql="UPDATE metas SET promedio_puntos='$promedio_puntos' WHERE id_meta='$id_meta'";
       mysqli_query($con, $sql);
+      if($_SESSION['calificar']){
+        $_SESSION['calificar']=true;
+      }
+    }
+    $niveles = array(10,50,100,200,500,1000,2000,5000,10000);
+    for ($i=0; $i <sizeof($niveles); $i++) {
+      if($puntos>$niveles[$i]){
+        $nivel=$i+2;
+      }else{
+        $porcentaje=$puntos*100/$niveles[$i];
+        break;
+      }
     }
     ?>
     <div class="principal">
@@ -102,6 +115,7 @@
           </div>
           <div class="linea">
             <p>Nivel: <?php  echo $nivel;?></p>
+            <p>Puntos: <?php echo $puntos; ?></p>
             <p><?php echo $porcentaje ?>%</p>
           </div>
         </div>

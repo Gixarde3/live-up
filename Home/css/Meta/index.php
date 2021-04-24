@@ -47,6 +47,7 @@
         $active=$obj->estado;
         $verificada=$obj->verificada;
         $nivel=$obj->nivel;
+        $puntos=$obj->puntaje;
         $porcentaje=$obj->porcentaje_nivel;
       }
     $id_meta=$_GET['id_meta'];
@@ -102,6 +103,15 @@
       $_SESSION['hash']=$_GET['hash'];
       echo "<script type='text/javascript'>window.location='../';</script>";
     }
+    $niveles = array(10,50,100,200,500,1000,2000,5000,10000);
+    for ($i=0; $i <sizeof($niveles); $i++) {
+      if($puntos>$niveles[$i]){
+        $nivel=$i+2;
+      }else{
+        $porcentaje=$puntos*100/$niveles[$i];
+        break;
+      }
+    }
     ?>
     <div class="principal">
       <img src="../images/Fondo-abrido.png" alt="Fondo" class="fondo-abrido" id=fondo-abrido>
@@ -118,6 +128,7 @@
           </div>
           <div class="linea">
             <p>Nivel: <?php  echo $nivel;?></p>
+            <p>Puntos: <?php  echo $puntos;?></p>
             <p><?php echo $porcentaje ?>%</p>
           </div>
         </div>

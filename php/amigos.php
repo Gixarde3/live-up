@@ -7,15 +7,28 @@ function listarAmigos($id_usu, $con){
   while($amigo=mysqli_fetch_array($amigos)){
     $sql="SELECT * FROM users WHERE idusuario='$amigo[0]'";
     $amigoResultante=mysqli_query($con, $sql);
+
     while ($resultado=mysqli_fetch_object($amigoResultante)) {
+      $puntos=$resultado->puntaje;
+      $niveles = array(10,50,100,200,500,1000,2000,5000,10000);
+      $nivel=1;
+      for ($i=0; $i <sizeof($niveles); $i++) {
+        if($puntos>$niveles[$i]){
+          $nivel=$i+2;
+        }else{
+          $porcentaje=$puntos*100/$niveles[$i];
+          break;
+        }
+      }
       echo "<li>".
         "<p>".$resultado->usuario."</p>"."
         <div class='barra-porcentaje meta-barra'>".
-          "<span class='porcentaje' style='width: ".$resultado->porcentaje_nivel."%'></span>".
+          "<span class='porcentaje' style='width: ".$porcentaje."%'></span>".
         "</div>".
         "<div class='linea'>".
-          "<p>Nv: ".$resultado->nivel."</p>".
-          "<p>".$resultado->porcentaje_nivel."%</p>".
+          "<p>Nv: ".$nivel."</p>".
+          "<p>Pt: ".$puntos."</p>".
+          "<p>".$porcentaje."%</p>".
         "</div>".
       "</li>";
       $contadorAmigos++;

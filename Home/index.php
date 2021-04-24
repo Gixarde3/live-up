@@ -59,6 +59,7 @@ if(isset($_SESSION['recargar'])){
         $verificada=$obj->verificada;
         $nivel=$obj->nivel;
         $porcentaje=$obj->porcentaje_nivel;
+        $puntos=$obj->puntaje;
       }
     if(isset($_POST['anadir'])){
       $meta=$_POST['metaNueva'];
@@ -91,6 +92,36 @@ if(isset($_SESSION['recargar'])){
     $por=100;
     $sql="UPDATE metas SET cumplida='$cumplida' WHERE porcentaje='$por'";
     mysqli_query($con,$sql);
+    $sql="SELECT * From metas WHERE cumplida='$cumplida'";
+    $consulta=mysqli_query($con,$sql);
+    while($res=mysqli_fetch_object($consulta)){
+      $subida=$res->puntos_subidos;
+      $padre=$res->id_padre;
+      $puntosDara=$res->promedio_puntos;
+      $id_meta=$res->id_meta;
+      $subidos=1;
+      if($subida==0){
+        $sql="SELECT * FROM users WHERE idusuario='$padre'";
+        $consultaUsuarioParaSubirPuntos=mysqli_query($con,$sql);
+        while ($usuarioASubirPuntos=mysqli_fetch_object($consultaUsuarioParaSubirPuntos)) {
+          $puntosActualesDelUsuario=$usuarioASubirPuntos->puntaje;
+        }
+        $puntosActualesDelUsuario+=$puntosDara;
+        $sql="UPDATE users SET puntaje='$puntosActualesDelUsuario' WHERE idusuario='$padre'";
+        mysqli_query($con,$sql);
+        $sql="UPDATE metas SET puntos_subidos='$subidos' WHERE id_meta='$id_meta'";
+        mysqli_query($con,$sql);
+      }
+      $niveles = array(10,50,100,200,500,1000,2000,5000,10000);
+      for ($i=0; $i <sizeof($niveles); $i++) {
+        if($puntos>$niveles[$i]){
+          $nivel=$i+2;
+        }else{
+          $porcentaje=$puntos*100/$niveles[$i];
+          break;
+        }
+      }
+    }
     ?>
     <div class="principal">
       <img src="images/Fondo-abrido.png" alt="Fondo" class="fondo-abrido" id=fondo-abrido>
@@ -107,6 +138,7 @@ if(isset($_SESSION['recargar'])){
           </div>
           <div class="linea">
             <p>Nivel: <?php  echo $nivel;?></p>
+            <p>Puntos: <?php echo $puntos; ?></p>
             <p><?php echo $porcentaje; ?>%</p>
           </div>
         </div>
