@@ -86,9 +86,8 @@
       $promedio_puntos=$puntosNuevos/$cantidad_calificada;
       $sql="UPDATE metas SET promedio_puntos='$promedio_puntos' WHERE id_meta='$id_meta'";
       mysqli_query($con, $sql);
-      if($_SESSION['calificar']){
-        $_SESSION['calificar']=true;
-      }
+      $_SESSION['calificar']=true;
+      echo "<script type='text/javascript'>window.location='../';</script>";
     }
     $niveles = array(10,50,100,200,500,1000,2000,5000,10000);
     for ($i=0; $i <sizeof($niveles); $i++) {

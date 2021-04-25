@@ -9,6 +9,12 @@ if(isset($_SESSION['recargar'])){
     $_SESSION['hash']."';</script>";
   }
 }
+if(isset($_SESSION['calificar'])){
+  if($_SESSION['calificar']){
+    $_SESSION['calificar']=false;
+    echo "<script type='text/javascript'>window.location='Calificar/'</script>";
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
