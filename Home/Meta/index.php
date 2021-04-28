@@ -112,6 +112,7 @@
     }
     ?>
     <div class="principal">
+      <button type="button" name="button" id="cerrarDesplegado" onclick="abrir()" class="fondo-abrido"></button>
       <img src="../images/Fondo-abrido.png" alt="Fondo" class="fondo-abrido" id=fondo-abrido>
       <div class="parte-arriba">
         <div class="perfil">
@@ -133,13 +134,13 @@
       </div>
       <div class="parte-abajo">
         <div class="opciones">
-          <div class="opcion amigos" id=borde>
+          <button class="opcion amigos" id=borde onclick="abrir()">
             <div class="boton-opcion">
               <img src="../images/usuarios-svg.svg" alt="Amigos" class="icono">
               <p>Social</p>
+              <img src="../images/proximo.svg" alt="Abrir" id=flecha>
             </div>
-            <button class="abrir" type="button" name="abrir" onclick="abrir()"> <img src="../images/proximo.svg" alt="Abrir" id=flecha> </button>
-          </div>
+          </button>
           <div class="social-desplegado" id=desplegar>
             <form class="buscar" action="../search/" method="get">
               <p>Buscar amigo: </p>
@@ -153,14 +154,18 @@
               ?>
             </div>
           </div>
-          <div class="opcion">
+          <a href="../Leaderboard" class="opcion">
             <img src="../images/trofeo.svg" alt="Leaderboards">
             <p>Leaderboards</p>
-          </div>
-          <div class="opcion">
+          </a>
+          <a href="/" class="opcion">
+            <img src="../images/hogar.svg" alt="Principal">
+            <p>Principal</p>
+          </a>
+          <a href="../Calificar" class="opcion">
             <img src="../images/clasificacion.svg" alt="Calificar Metas">
             <p>Calificar metas</p>
-          </div>
+          </a>
           <div class="opcion configuracion" id="conf">
             <img src="../images/configuraciones.svg" alt="Configuaración">
             <p>Configuración</p>
@@ -188,7 +193,7 @@
                 "</button>".
               "</div>";
               }else{
-                echo "<p style='color: #43df30 text-align:center; width: 15%;'>Esta tarea ya ha sido cumplida</p>";
+                echo "<p class='tarea_estado' style='color: #43df30 text-align:center;'>Esta tarea ya ha sido cumplida</p>";
               }
               echo "</div>".
               "</div>";
@@ -196,7 +201,7 @@
               echo "<div class='linea linea-tarea moviles' style='justify-content: space-around;'>".
               "<div class='espacio'>".
                 "<p>".$tareas[4]."</p>".
-                "<p>Esta tarea otorgó ".$tareas[5]."% a la meta</p>".
+                "<p>Esta tarea otorgará ".$tareas[5]."% a la meta</p>".
               "</div>";
               if(!isset($_GET['idBuscado'])){
                 echo "<div class='botones-tarea'>".
@@ -211,7 +216,7 @@
                   "</button>".
                 "</div>";
               }else{
-                echo "<p style='text-align:center; width: 15%;'>Esta tarea no ha sido cumplida</p>";
+                echo "<p class='tarea-estado' style='text-align:center;'>Esta tarea no ha sido cumplida</p>";
               }
               echo "</div></div>";
             }
@@ -244,11 +249,6 @@
                 <button type="button" name="crear" onclick="crear(7,0)"> <img src="../images/anadir.svg" alt="Crear meta"> <p>Crear</p></button>
               </div>
             <?php endif; ?>
-          <?php endif; ?>
-          <?php if (isset($_GET['idBuscado'])): ?>
-            <div class="botones">
-              <a href="../" style="width:20%; text-align: center;"> <img src="../images/hogar.svg" alt="Regresar a mi perfil"> Regresar a mi perfil</a>
-            </div>
           <?php endif; ?>
         </div>
       </div>

@@ -177,6 +177,7 @@ p{
 -moz-border-radius: 0px 18px 0px 0px;
 -webkit-border-radius: 0px 18px 0px 0px;
 width: 100%;
+margin-bottom: 0;
 }
 .opciones{
   position: fixed;
@@ -402,9 +403,6 @@ meta p{
   flex-direction: column;
   align-items: center;
 }
-.metas{
-  overflow-y: hidden;
-}
 .imagen-metas{
   width: 2%;
 }
@@ -417,6 +415,33 @@ meta p{
 .linea_estrellas{
   display: flex;
   padding-bottom: 10px;
+}
+.ranking{
+  width: 80%;
+}
+.alinecion{
+  display: flex;
+  justify-content: space-around;
+}
+.puntaje_destacando{
+  color: #ffc750;
+}
+.numero_rank{
+  font-size: 30px;
+}
+.numero_1{
+  font-size: 50px;
+  color: #ffea50;
+}
+.numero_2{
+  font-size: 40px;
+  color: #7cbdff;
+}
+.numero_3{
+  color: #98ff7c;
+}
+.tarea_estado{
+  width: 15%;
 }
 /*Moviles*/
 @media screen and (max-width: 768px) {
@@ -500,6 +525,9 @@ meta p{
   }
   .imagen-metas{
     width: 6%;
+  }
+  .tarea_estado{
+    width: 80%;
   }
 }
 @media screen and (max-width: 600px) {

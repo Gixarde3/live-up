@@ -14,6 +14,7 @@ async function abrir(){
     porcentajeAAbrir=100;
   }
   if(!abrido){
+    document.getElementById('cerrarDesplegado').style='display: none; z-index:0;';
     document.getElementById('flecha').style = '-webkit-transform: rotate(0deg);-moz-transform: rotate(0deg);-ms-transform: rotate(0deg);transform: rotate(0deg);';
     document.getElementById('borde').style='border-radius: 0px 18px 0px 0px;-moz-border-radius: 0px 18px 0px 0px;-webkit-border-radius: 0px 18px 0px 0px;';
     document.getElementById('fondo-abrido').style='display: none; z-index:0;';
@@ -24,6 +25,7 @@ async function abrir(){
         await sleep(1);
       }
     }else{
+      document.getElementById('cerrarDesplegado').style='display: block; z-index:4;';
       document.getElementById('flecha').style = '-webkit-transform: rotate(-180deg);-moz-transform: rotate(-180deg);-ms-transform: rotate(-180deg);transform: rotate(-180deg);';
       document.getElementById('borde').style='border-radius: 0px 0px 0px 0px;-moz-border-radius: 0px 0px 0px 0px;-webkit-border-radius: 0px 0px 0px 0px;';
       document.getElementById('fondo-abrido').style='display: block; z-index:3;';
@@ -118,6 +120,16 @@ async function abrir(){
       "<input type='hidden' name='meta_calificar' value="+id_meta+">"+
       "<input type='submit' name='enviar_estrellas' value='Enviar ⭐ de calificación'>"+
       "</form>";
+      break;
+      case 12:
+      document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'>"+
+        "<img src='../images/cerrar.svg' alt='Cerrar'>"+
+      "</button>"+
+      "<h2 id=titulo>¡Parece que quieres volver a calificar esta tarea!</h2>"+
+      "<h3>Esa acción es solo válida para administradores.</h3>"+
+      "<form>"+
+      "<button type='button' onclick=minimizar() class='no'><p>¡Entendido! 👍</p></button>"+
+      "</form>"
       break;
     }
     document.getElementById('fondo-abrido').style='display: block; z-index:7;';

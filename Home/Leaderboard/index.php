@@ -7,15 +7,13 @@
     <link rel="stylesheet" href="../../css/reset.css">
     <link rel="stylesheet" href="../css/home.css">
     <meta charset="utf-8">
-    <title>Buscar -
+    <title>Leaderboards -
       <?php if (isset($_SESSION['usuario'])):
         echo $_SESSION['usuario'];
-      ?>
-      </title>
+      ?></title>
     <?php else: ?>
-      <script type="text/javascript">window.location="/";</script>
+      </title><script type="text/javascript">window.location="/";</script>
     <?php endif; ?>
-    </title>
     <script type="text/javascript" src="../js/Home.js">
     </script>
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
@@ -41,15 +39,39 @@
       $puntos=$obj->puntaje;
       $porcentaje=$obj->porcentaje_nivel;
     }
-    $busqueda=$_GET['buscar'];
-    $sql="SELECT * FROM users WHERE usuario LIKE '%".$busqueda."%'";
+    $calificada=0;
+    $sql="SELECT * FROM users ORDER BY puntaje DESC";
     $res=mysqli_query($con, $sql);
+    function buscarUsuario($id_usuario,$con){
+      $sql="SELECT * FROM users WHERE idusuario='$id_usuario'";
+      $consulta=mysqli_query($con,$sql);
+      while($obj=mysqli_fetch_object($consulta)){
+        $nombre=$obj->usuario;
+      }
+      return $nombre;
+    }
     $niveles = array(10,50,100,200,500,1000,2000,5000,10000);
     for ($i=0; $i <sizeof($niveles); $i++) {
       if($puntos>$niveles[$i]){
         $nivel=$i+2;
       }else{
         $porcentaje=$puntos*100/$niveles[$i];
+        break;
+      }
+    }
+    function checarSiEsTop3($rank){
+      switch ($rank) {
+        case 1:
+          return "numero_1";
+        break;
+        case 2:
+          return "numero_2";
+        break;
+        case 3:
+          return "numero_3";
+        break;
+        default:
+          return "";
         break;
       }
     }
@@ -85,6 +107,11 @@
             </div>
           </button>
           <div class="social-desplegado" id=desplegar>
+            <form class="buscar" action="../search" method="get">
+              <p>Buscar amigo: </p>
+              <input type="text" name="buscar" placeholder="Escribe el usuario" class="buscar">
+              <input type="submit" value="Buscar">
+            </form>
             <div class="lista-amigos">
               <h1 style="width: 100%; text-align: center;">Amigos</h1>
               <?php
@@ -92,7 +119,7 @@
               ?>
             </div>
           </div>
-          <a href="../Leaderboard" class="opcion">
+          <a href="" class="opcion">
             <img src="../images/trofeo.svg" alt="Leaderboards">
             <p>Leaderboards</p>
           </a>
@@ -107,44 +134,59 @@
           <div class="opcion configuracion" id="conf">
             <img src="../images/configuraciones.svg" alt="Configuaración">
             <p>Configuración</p>
+
           </div>
+
         </div>
         <div class="metas" id=metas style="display:block;">
-          <h2>Buscar usuarios:</h2>
-          <form class="buscar-page" action="" method="get">
-            <input type="text" name="buscar" value="<?php echo $_GET['buscar'] ?>" placeholder="Buscar un usuario">
-            <input type="submit" name="" value="Buscar">
-          </form>
-          <h2>Resultados: </h2>
+          <h2 style="width: 100%; text-align: center; display: block ruby;">Top 10 mejores personas cumpliendo sus metas</h2>
           <?php
           $contadorResultados=0;
-          while ($usuario=mysqli_fetch_array($res)) {
-            if($usuario[0]!=$id_usu){
-              echo "<div class='perfil-encontrado'><div class='linea' style='margin-bottom:20px;'>".
-              "<a style='width: 30%;display:flex;align-items:center;flex-direction:column;justify-content:space-around;' href='../?idBuscado=".$usuario[0]."'>".
-              $usuario[1]."</a>".
-              "<div style='display: flex;width: 70%; flex-direction: column;justify-content: space-around; align-items:center'>".
-                "<div class='barra-porcentaje meta-barra'>".
-                  "<span class='porcentaje' style='width: ".$usuario[9]."%'></span>".
-                "</div>".
-                "<div class='linea'>".
-                  "<p>Nv: ".$usuario[8]."</p>".
-                  "<p>".$usuario[9]."%</p>".
-                "</div>".
-              "</div>".
-              "<form action='' method='post' style='width: 10%;'>".
-                "<input type='text' name='amigo_anadir' value='".$usuario[0]."' style='display:none;'>".
-                "<input class='".checarSiAmigo($id_usu, $usuario[0], $con)." amigos-anadir' type='image' name='anadirAmigo' value='simon' src=../images/".checarSiAmigo($id_usu,$usuario[0],$con).".svg>".
-              "</form>".
-              "</div>
-            </div>";
-            $contadorResultados++;
-            }
-          }
+          while($arreglo=mysqli_fetch_array($res)):
           ?>
+          <div class="meta alinecion">
+            <?php
+            $contadorResultados++;
+            ?>
+            <div class="perfil ranking">
+              <div class="linea">
+                <a href="../?idBuscado=<?php echo $arreglo['idusuario']; ?>"> <p><?php echo $arreglo['usuario'] ?></p></a>
+                <p class="numero_rank <?php echo checarSiEsTop3($contadorResultados); ?>">#<?php echo $contadorResultados; ?></p>
+                <p class="puntaje_destacando"><?php echo $arreglo['puntaje'] ?> puntos</p>
+              </div>
+              <div class="linea">
+                <div class="barra-porcentaje">
+                  <?php
+                  $puntosRanking=$arreglo['puntaje'];
+                  $nivelRanking=$arreglo['nivel'];
+                  $nivelesUsuariosRanking = array(10,50,100,200,500,1000,2000,5000,10000);
+                  for ($i=0; $i <sizeof($nivelesUsuariosRanking); $i++) {
+                    if($puntosRanking>$nivelesUsuariosRanking[$i]){
+                      $nivelRanking=$i+2;
+                    }else{
+                      $porcentajeRanking=$puntosRanking*100/$nivelesUsuariosRanking[$i];
+                      break;
+                    }
+                  }
+                   ?>
+                  <span class="porcentaje" style="width: <?php echo $porcentajeRanking; ?>%"></span>
+                </div>
+              </div>
+              <div class="linea">
+                <p>Nivel: <?php  echo $nivelRanking;?></p>
+                <p><?php echo $porcentajeRanking ?>%</p>
+              </div>
+            </div>
+          </div>
+          <?php
+          if($contadorResultados>=10){
+            break;
+          }
+          endwhile;
+           ?>
           <?php if ($contadorResultados<1): ?>
-            <h3>No hay ningun usuario que contenga en su nombre "<?php echo $_GET['buscar']; ?>".</h3>
-            <h3>Intente con otra búsqueda.</h3>
+            <h3>Al parecer no hay metas que puedas calificar.</h3>
+            <h3>¡Parece que tendrás que esperar un poco!.</h3>
           <?php endif; ?>
         </div>
       </div>
@@ -153,15 +195,5 @@
     </div>
     <canvas id="stars"></canvas>
     <script src="../../js/fondo.js"></script>
-    <?php
-    if(isset($_POST['amigo_anadir'])){
-      $usuarioAnadir=$_POST['amigo_anadir'];
-      if(checarSiAmigo($id_usu,$usuarioAnadir,$con)=="a"){
-        $sql="INSERT INTO amigos_".$id_usu." (id_amigo) VALUES ('$usuarioAnadir');";
-        mysqli_query($con,$sql);
-        echo '<script type="text/javascript">window.location="../";</script>';
-      }
-    }
-    ?>
   </body>
 </html>

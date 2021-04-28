@@ -20,6 +20,7 @@
   </head>
   <body>
     <?php
+    $validacion_de_meta_calificada_una_sola_vez=true;
     include '../../php/conexion.php';
     include '../../php/amigos.php';
     $con=conectar();
@@ -62,32 +63,46 @@
       mysqli_query($con,$sql);
     }
     if(isset($_POST['enviar_estrellas'])){
+      $validacion_de_meta_calificada_una_sola_vez=true;
       $id_meta=$_POST['meta_calificar'];
-      $cantidad_estrellas=$_POST['valor_estrellas'];
-      $calificada=1;
-      $sql="SELECT * From metas WHERE id_meta='$id_meta'";
+      $sql="SELECT * FROM calificacion_usuario WHERE id_usuario='$id_usu' AND id_meta_calificada='$id_meta'";
       $consulta=mysqli_query($con,$sql);
-      while($obj=mysqli_fetch_object($consulta)){
-        $puntosActuales=$obj->puntos;
-        $cantidad_calificada=$obj->cantidad_calificacion;
+      while(mysqli_fetch_object($consulta)){
+        $validacion_de_meta_calificada_una_sola_vez=false;
       }
-      $puntosNuevos=$puntosActuales+($cantidad_estrellas*10);
-      $cantidad_calificada++;
-      if($cantidad_calificada<=10){
-        $sql="UPDATE metas SET puntos='$puntosNuevos' WHERE id_meta='$id_meta'";
+      if($validacion_de_meta_calificada_una_sola_vez){
+        if(isset($_POST['valor_estrellas'])){
+          $cantidad_estrellas=$_POST['valor_estrellas'];
+        }else{
+          $cantidad_estrellas=0;
+        }
+        $calificada=1;
+        $sql="SELECT * From metas WHERE id_meta='$id_meta'";
+        $consulta=mysqli_query($con,$sql);
+        while($obj=mysqli_fetch_object($consulta)){
+          $puntosActuales=$obj->puntos;
+          $cantidad_calificada=$obj->cantidad_calificacion;
+        }
+        $puntosNuevos=$puntosActuales+($cantidad_estrellas*10);
+        $cantidad_calificada++;
+        if($cantidad_calificada<=10){
+          $sql="UPDATE metas SET puntos='$puntosNuevos' WHERE id_meta='$id_meta'";
+          mysqli_query($con, $sql);
+          $sql="UPDATE metas SET cantidad_calificacion='$cantidad_calificada' WHERE id_meta='$id_meta'";
+          mysqli_query($con, $sql);
+        }
+        if($cantidad_calificada>=10){
+          $sql="UPDATE metas SET calificada='$calificada' WHERE id_meta='$id_meta'";
+          mysqli_query($con, $sql);
+        }
+        $promedio_puntos=$puntosNuevos/$cantidad_calificada;
+        $sql="UPDATE metas SET promedio_puntos='$promedio_puntos' WHERE id_meta='$id_meta'";
         mysqli_query($con, $sql);
-        $sql="UPDATE metas SET cantidad_calificacion='$cantidad_calificada' WHERE id_meta='$id_meta'";
-        mysqli_query($con, $sql);
+        $sql="INSERT INTO calificacion_usuario (id_usuario,id_meta_calificada) VALUES ('$id_usu','$id_meta')";
+        mysqli_query($con,$sql);
+        $_SESSION['calificar']=true;
+        echo "<script type='text/javascript'>window.location='../';</script>";
       }
-      if($cantidad_calificada>=10){
-        $sql="UPDATE metas SET calificada='$calificada' WHERE id_meta='$id_meta'";
-        mysqli_query($con, $sql);
-      }
-      $promedio_puntos=$puntosNuevos/$cantidad_calificada;
-      $sql="UPDATE metas SET promedio_puntos='$promedio_puntos' WHERE id_meta='$id_meta'";
-      mysqli_query($con, $sql);
-      $_SESSION['calificar']=true;
-      echo "<script type='text/javascript'>window.location='../';</script>";
     }
     $niveles = array(10,50,100,200,500,1000,2000,5000,10000);
     for ($i=0; $i <sizeof($niveles); $i++) {
@@ -100,6 +115,7 @@
     }
     ?>
     <div class="principal">
+      <button type="button" name="button" id="cerrarDesplegado" onclick="abrir()" class="fondo-abrido"></button>
       <img src="../images/Fondo-abrido.png" alt="Fondo" class="fondo-abrido" id=fondo-abrido>
       <div class="parte-arriba">
         <div class="perfil">
@@ -121,13 +137,13 @@
       </div>
       <div class="parte-abajo">
         <div class="opciones">
-          <div class="opcion amigos" id=borde>
+          <button class="opcion amigos" id=borde onclick="abrir()">
             <div class="boton-opcion">
               <img src="../images/usuarios-svg.svg" alt="Amigos" class="icono">
               <p>Social</p>
+              <img src="../images/proximo.svg" alt="Abrir" id=flecha>
             </div>
-            <button class="abrir" type="button" name="abrir" onclick="abrir()"> <img src="../images/proximo.svg" alt="Abrir" id=flecha> </button>
-          </div>
+          </button>
           <div class="social-desplegado" id=desplegar>
             <form class="buscar" action="../search" method="get">
               <p>Buscar amigo: </p>
@@ -141,10 +157,14 @@
               ?>
             </div>
           </div>
-          <div class="opcion">
+          <a href="../Leaderboard" class="opcion">
             <img src="../images/trofeo.svg" alt="Leaderboards">
             <p>Leaderboards</p>
-          </div>
+          </a>
+          <a href="/" class="opcion">
+            <img src="../images/hogar.svg" alt="Principal">
+            <p>Principal</p>
+          </a>
           <a href="" class="opcion">
             <img src="../images/clasificacion.svg" alt="Calificar Metas">
             <p>Calificar metas</p>
@@ -165,9 +185,8 @@
           <div class="meta">
             <?php
             $contadorResultados++;
-            $extra=isset($_GET['idBuscado'])?"&idBuscado=".$_GET['idBuscado']:"";
             ?>
-            <a href="../Meta/?id_meta=<?php echo $arreglo['id_meta'] ?>&hash=<?php echo $arreglo['hash'].$extra ?>">
+            <a href="../Meta/?id_meta=<?php echo $arreglo['id_meta'] ?>&hash=<?php echo $arreglo['hash']?> <?php echo $arreglo['id_padre']!=$id_usu?"&idBuscado=".$arreglo['id_padre']: ""; ?>">
               <div style='width:100%;display:flex;justify-content: space-between;'>
                 <?php echo  $arreglo['texto_meta']; ?>
                 <p> <?php echo buscarUsuario($arreglo['id_padre'],$con); ?></p>
@@ -193,7 +212,6 @@
             <h3>Al parecer no hay metas que puedas calificar.</h3>
             <h3>¡Parece que tendrás que esperar un poco!.</h3>
           <?php endif; ?>
-          <a href="../" style="display: flex; flex-direction:column; margin-top:50px;width: 100%;align-items: center;"> <img src="../images/hogar.svg" style="width:30%;" alt="Home"> Regresar</a>
         </div>
       </div>
     </div>
@@ -201,5 +219,10 @@
     </div>
     <canvas id="stars"></canvas>
     <script src="../../js/fondo.js"></script>
+    <?php
+    if(!$validacion_de_meta_calificada_una_sola_vez){
+      echo "<script type='text/javascript'>crear(12,0)</script>";
+    }
+     ?>
   </body>
 </html>

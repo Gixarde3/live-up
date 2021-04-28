@@ -91,6 +91,8 @@ if(isset($_SESSION['calificar'])){
       $id_meta=$_POST['id_meta_eliminar'];
       $sql="DELETE FROM metas WHERE id_meta='$id_meta'";
       mysqli_query($con,$sql);
+      $sql="DELETE FROM minimetas WHERE meta_madre='$id_meta'";
+      mysqli_query($con,$sql);
     }
     $consultarMetas="SELECT * FROM metas WHERE id_padre='$id_usu'";
     $resultadoMetas=mysqli_query($con,$consultarMetas);
@@ -130,6 +132,7 @@ if(isset($_SESSION['calificar'])){
     }
     ?>
     <div class="principal">
+      <button type="button" name="button" id="cerrarDesplegado" onclick="abrir()" class="fondo-abrido"></button>
       <img src="images/Fondo-abrido.png" alt="Fondo" class="fondo-abrido" id=fondo-abrido>
       <div class="parte-arriba">
         <div class="perfil">
@@ -151,13 +154,13 @@ if(isset($_SESSION['calificar'])){
       </div>
       <div class="parte-abajo">
         <div class="opciones">
-          <div class="opcion amigos" id=borde>
+          <button class="opcion amigos" id=borde onclick="abrir()">
             <div class="boton-opcion">
               <img src="images/usuarios-svg.svg" alt="Amigos" class="icono">
               <p>Social</p>
+              <img src="images/proximo.svg" alt="Abrir" id=flecha>
             </div>
-            <button class="abrir" type="button" name="abrir" onclick="abrir()"> <img src="images/proximo.svg" alt="Abrir" id=flecha> </button>
-          </div>
+          </button>
           <div class="social-desplegado" id=desplegar>
             <form class="buscar" action="search/" method="get">
               <p>Buscar amigo: </p>
@@ -171,10 +174,14 @@ if(isset($_SESSION['calificar'])){
               ?>
             </div>
           </div>
-          <div class="opcion">
+          <a href="Leaderboard/" class="opcion">
             <img src="images/trofeo.svg" alt="Leaderboards">
             <p>Leaderboards</p>
-          </div>
+          </a>
+          <a href="" class="opcion">
+            <img src="images/hogar.svg" alt="Principal">
+            <p>Principal</p>
+          </a>
           <a href="Calificar/" class="opcion">
             <img src="images/clasificacion.svg" alt="Calificar Metas">
             <p>Calificar metas</p>
@@ -193,23 +200,24 @@ if(isset($_SESSION['calificar'])){
             if($arreglo['cumplida']!=1&&!isset($_POST['metas_cumplidas'])){
               echo"<div class='meta'>";
               $extra=isset($_GET['idBuscado'])?"&idBuscado=".$_GET['idBuscado']:"";
-              echo "<a href='../Home/Meta/?id_meta=".$arreglo['id_meta']."&hash=".$arreglo['hash'].$extra."'>".
-                $arreglo['texto_meta']."<img class='imagen-metas' src='../Home/images/portapapeles.svg' alt=''>
-              </a>";
+              echo "<div class='linea linea-meta'><a href='../Home/Meta/?id_meta=".$arreglo['id_meta']."&hash=".$arreglo['hash'].$extra."'>".
+                $arreglo['texto_meta']."<button class='meta-boton' type='button' name='editar' onclick='crear(2, ".$arreglo[0].")'></a><img class='imagen-metas' src='../Home/images/editar.svg' alt=''></button></div>";
               echo "<div class='linea linea-meta'>".
                 "<div class='barra-porcentaje meta-barra'>".
                   "<span class='porcentaje' style='width: ".$arreglo['porcentaje']."%'></span>".
                   "</div>".
                   "<p>".$arreglo['porcentaje']."%</p>";
               if(!isset($_GET['idBuscado'])){
-              echo "<button class='meta-boton' type='button' name='editar' onclick='crear(2, ".$arreglo[0].")'>".
-                "<img src='images/editar.svg' alt='Editar meta'>".
-                "</button>".
+              echo "<a href='../Home/Meta/?id_meta=".$arreglo['id_meta']."&hash=".$arreglo['hash'].$extra."'><button class='meta-boton' type='button' name='editar'>".
+                "<img src='../Home/images/portapapeles.svg' alt='Editar meta'>".
+                "</button></a>".
                 "<button class='meta-boton' type='button' name='eliminar' onclick='crear(3, ".$arreglo[0].")''>".
                   "<img src='images/eliminar.svg' alt='Eliminar meta'>".
                 "</button>".
               "</div>";
-              }
+            }else{
+              echo "</div>";
+            }
               echo "<p style='width: 100%; text-align: right;'>";
               if($arreglo['calificada']==1){
                 echo $arreglo['promedio_puntos']." pts.";
@@ -280,10 +288,6 @@ if(isset($_SESSION['calificar'])){
             <?php endif; ?>
           <?php endif; ?>
           <?php if (isset($_GET['idBuscado'])): ?>
-            <div class="botones">
-              <a href="../Home" style="align-items:center; width: 20%; text-align: center;">
-                <img src="images/hogar.svg" alt="Regresar a mi perfil">Regresar a mi perfil</a>
-            </div>
           <?php endif; ?>
           <?php if ($contadorCumplidas<1&&isset($_POST['metas_cumplidas'])): ?>
             <?php if (isset($_GET['idBuscado'])): ?>
@@ -305,7 +309,6 @@ if(isset($_SESSION['calificar'])){
       </div>
         <div class="crear-meta" id=crear-meta>
         </div>
-    </div>
     <?php
     if(isset($existeMeta)){
       if($existeMeta){
