@@ -83,13 +83,14 @@ async function abrir(){
       document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'><img src='../images/cerrar.svg' alt='Cerrar'></button><h2 id=titulo>Parece que ya has cumplido esta tarea. <br>¡Bien hecho!</h2><button type='button' name='no' onclick='minimizar()' class='no'><p>Cerrar</p></button>";
       break;
       case 6:
-      document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'><img src='images/cerrar.svg' alt='Cerrar'></button><h2 id=titulo>Porcentaje inválido</h2><p class='texto-aclaracion' id=aclaracion>Parece que quiere añadir una meta que completará su meta a más del 100%. Inténtelo de nuevo.</p><button type='button' name='no' onclick='minimizar()' class='no'><p>Cerrar</p></button>";
+      document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'><img src='../images/cerrar.svg' alt='Cerrar'></button><h2 id=titulo>Porcentaje inválido</h2><p class='texto-aclaracion' id=aclaracion>Parece que quiere añadir una meta que completará su meta a más del 100% o el porcentaje es negativo. Inténtelo de nuevo.</p><button type='button' name='no' onclick='minimizar()' class='no'><p>Cerrar</p></button>";
       break;
       case 7:
-      document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'><img src='../images/cerrar.svg' alt='Cerrar'></button><h2 id=titulo>Añadir una tarea:</h2><form action='' method='post'><input class='metaNueva' type='text' name='tareaNueva' placeholder='Ingresa una tarea' required><input class='metaNueva' type='text' name='porcentajeTarea' placeholder='Ingresa el porcentaje que da a la meta' required><input class='anadirBoton' type='submit' value='Añadir' name='anadir' id=titulo></form>";
+      document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'><img src='../images/cerrar.svg' alt='Cerrar'></button><h2 id=titulo>Añadir una tarea:</h2><form action='' method='post'><input class='metaNueva' type='text' name='tareaNueva' placeholder='Ingresa una tarea' required><input class='metaNueva' type='number' name='porcentajeTarea' placeholder='Ingresa el porcentaje que da a la meta' required><input class='anadirBoton' type='submit' value='Añadir' name='anadir' id=titulo></form>";
       break;
       case 8:
-      document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'><img src='../images/cerrar.svg' alt='Cerrar'></button><h2 id=titulo>Editar la tarea:</h2><form action='' method='post'><input type='text' name='id_tarea_editar' value='"+id_meta+"' style='display: none;'><input class='metaNueva' type='text' name='tareaEditada' placeholder='Ingresa una meta' required><input class='anadirBoton' type='submit' value='Editar' name='editar' id=titulo value='editar'></form>";
+      var porcentajeActualDeLaMeta=document.getElementById('porcentajeDeLaMeta_'+id_meta).value;
+      document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'><img src='../images/cerrar.svg' alt='Cerrar'></button><h2 id=titulo>Editar la tarea:</h2><form action='' method='post'><input type='text' name='id_tarea_editar' value='"+id_meta+"' style='display: none;'><input class='metaNueva' type='text' name='tareaEditada' placeholder='Ingresa una tarea' required><div class='linea'><input class='metaNueva' type='number' name='porcentajeEditada' placeholder='Ingresa un porcentaje nuevo' value="+porcentajeActualDeLaMeta+" required><p>%</p></div><input class='anadirBoton' type='submit' value='Editar' name='editar' id=titulo value='editar'></form>";
       break;
       case 9:
       document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'><img src='../images/cerrar.svg' alt='Cerrar'></button><h2 id=titulo>¿Estás seguro de eliminar esta tarea?</h2><form action='' method='post'><input type='text' name='id_tarea_eliminar' value='"+id_meta+"' style='display: none;'> <div class='linea'><input class='anadirBoton' type='submit' value='Sí' name='eliminar' value='eliminar' id=titulo><button type='button' name='no' onclick='minimizar()' class='no'><p>No</p></button></div></form>";
@@ -125,7 +126,7 @@ async function abrir(){
       document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'>"+
         "<img src='../images/cerrar.svg' alt='Cerrar'>"+
       "</button>"+
-      "<h2 id=titulo>¡Parece que quieres volver a calificar esta tarea!</h2>"+
+      "<h2 id=titulo>¡Parece que quieres volver a calificar esta meta!</h2>"+
       "<h3>Esa acción es solo válida para administradores.</h3>"+
       "<form>"+
       "<button type='button' onclick=minimizar() class='no'><p>¡Entendido! 👍</p></button>"+

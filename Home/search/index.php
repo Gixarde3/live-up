@@ -40,6 +40,7 @@
       $nivel=$obj->nivel;
       $puntos=$obj->puntaje;
       $porcentaje=$obj->porcentaje_nivel;
+      $admin=$obj->admin;
     }
     $busqueda=$_GET['buscar'];
     $sql="SELECT * FROM users WHERE usuario LIKE '%".$busqueda."%'";
@@ -60,7 +61,7 @@
       <div class="parte-arriba">
         <div class="perfil">
           <div class="linea">
-            <p><?php echo $_SESSION['usuario'] ?></p>
+            <p><?php echo $_SESSION['usuario'] ?><?php echo $admin==1?"<img class='verificado' src='../images/cheque.svg' alt='Verificado'>":""; ?></p>
             <a href="../../logout.php"><img src="../images/salir.svg" alt="Salir" class="salir"></a>
           </div>
           <div class="linea">
@@ -119,17 +120,29 @@
           <?php
           $contadorResultados=0;
           while ($usuario=mysqli_fetch_array($res)) {
+            $iconoVerficacion=$usuario['admin']==1?"<img class='verificado' src='https://liveupproject.000webhostapp.com/Home/images/cheque.svg' alt='Verificado'>":"";
             if($usuario[0]!=$id_usu){
+              $nivelUsuario=1;
+              $puntosUsuario=$usuario['puntaje'];
+              $nivelesUsuario = array(10,50,100,200,500,1000,2000,5000,10000);
+              for ($i=0; $i <sizeof($nivelesUsuario); $i++) {
+                if($puntosUsuario>=$nivelesUsuario[$i]){
+                  $nivelUsuario=$i+2;
+                }else{
+                  $porcentajeUsuario=$puntosUsuario*100/$nivelesUsuario[$i];
+                  break;
+                }
+              }
               echo "<div class='perfil-encontrado'><div class='linea' style='margin-bottom:20px;'>".
               "<a style='width: 30%;display:flex;align-items:center;flex-direction:column;justify-content:space-around;' href='../?idBuscado=".$usuario[0]."'>".
-              $usuario[1]."</a>".
+              $usuario[1].$iconoVerficacion."</a>".
               "<div style='display: flex;width: 70%; flex-direction: column;justify-content: space-around; align-items:center'>".
                 "<div class='barra-porcentaje meta-barra'>".
-                  "<span class='porcentaje' style='width: ".$usuario[9]."%'></span>".
+                  "<span class='porcentaje' style='width: ".$porcentajeUsuario."%'></span>".
                 "</div>".
                 "<div class='linea'>".
-                  "<p>Nv: ".$usuario[8]."</p>".
-                  "<p>".$usuario[9]."%</p>".
+                  "<p>Nv: ".$nivelUsuario."</p>".
+                  "<p>".$porcentajeUsuario."%</p>".
                 "</div>".
               "</div>".
               "<form action='' method='post' style='width: 10%;'>".

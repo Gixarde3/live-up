@@ -39,6 +39,7 @@
       $nivel=$obj->nivel;
       $puntos=$obj->puntaje;
       $porcentaje=$obj->porcentaje_nivel;
+      $admin=$obj->admin;
     }
     $calificada=0;
     $sql="SELECT * FROM metas WHERE calificada='$calificada'";
@@ -48,8 +49,10 @@
       $consulta=mysqli_query($con,$sql);
       while($obj=mysqli_fetch_object($consulta)){
         $nombre=$obj->usuario;
+        $adminBuscado=$obj->admin;
+        $datos = array('nombre' => $nombre, 'admin'=>$adminBuscado );
       }
-      return $nombre;
+      return $datos;
     }
     if(isset($_POST['editar'])){
       $metaEditada=$_POST['metaEditada'];
@@ -63,6 +66,7 @@
       mysqli_query($con,$sql);
     }
     if(isset($_POST['enviar_estrellas'])){
+
       $validacion_de_meta_calificada_una_sola_vez=true;
       $id_meta=$_POST['meta_calificar'];
       $sql="SELECT * FROM calificacion_usuario WHERE id_usuario='$id_usu' AND id_meta_calificada='$id_meta'";
@@ -70,7 +74,7 @@
       while(mysqli_fetch_object($consulta)){
         $validacion_de_meta_calificada_una_sola_vez=false;
       }
-      if($validacion_de_meta_calificada_una_sola_vez){
+      if($validacion_de_meta_calificada_una_sola_vez||$admin==1){
         if(isset($_POST['valor_estrellas'])){
           $cantidad_estrellas=$_POST['valor_estrellas'];
         }else{
@@ -120,7 +124,7 @@
       <div class="parte-arriba">
         <div class="perfil">
           <div class="linea">
-            <p><?php echo $_SESSION['usuario'] ?></p>
+            <p><?php echo $_SESSION['usuario'] ?><?php echo $admin==1?"<img class='verificado' src='../images/cheque.svg' alt='Verificado'>":""; ?></p>
             <a href="../../logout.php"><img src="../images/salir.svg" alt="Salir" class="salir"></a>
           </div>
           <div class="linea">
@@ -185,11 +189,12 @@
           <div class="meta">
             <?php
             $contadorResultados++;
+            $arregloUsu=buscarUsuario($arreglo['id_padre'],$con);
             ?>
             <a href="../Meta/?id_meta=<?php echo $arreglo['id_meta'] ?>&hash=<?php echo $arreglo['hash']?> <?php echo $arreglo['id_padre']!=$id_usu?"&idBuscado=".$arreglo['id_padre']: ""; ?>">
               <div style='width:100%;display:flex;justify-content: space-between;'>
                 <?php echo  $arreglo['texto_meta']; ?>
-                <p> <?php echo buscarUsuario($arreglo['id_padre'],$con); ?></p>
+                <p> <?php echo $arregloUsu['nombre']  ?> <?php echo $arregloUsu['admin']==1?"<img class='verificado' src='../images/cheque.svg' alt='Verificado'>":""; ?></p>
               </div>
             </a>
             <div class='linea linea-meta'>

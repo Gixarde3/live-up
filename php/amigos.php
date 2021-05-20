@@ -20,8 +20,9 @@ function listarAmigos($id_usu, $con){
           break;
         }
       }
-      echo "<li>".
-        "<p>".$resultado->usuario."</p>"."
+      $extraVerificado=$resultado->admin;
+      $verificado=$extraVerificado==1?"<img class='verificado' src='https://liveupproject.000webhostapp.com/Home/images/cheque.svg' alt='Verificado'>":"";
+      echo "<a href='https://liveupproject.000webhostapp.com/Home/?idBuscado=".$resultado->idusuario."'><p>".$resultado->usuario.$verificado."</p></a>"."
         <div class='barra-porcentaje meta-barra'>".
           "<span class='porcentaje' style='width: ".$porcentaje."%'></span>".
         "</div>".
@@ -29,8 +30,7 @@ function listarAmigos($id_usu, $con){
           "<p>Nv: ".$nivel."</p>".
           "<p>Pt: ".$puntos."</p>".
           "<p>".$porcentaje."%</p>".
-        "</div>".
-      "</li>";
+        "</div>";
       $contadorAmigos++;
     }
   }

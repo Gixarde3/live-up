@@ -38,6 +38,7 @@
       $nivel=$obj->nivel;
       $puntos=$obj->puntaje;
       $porcentaje=$obj->porcentaje_nivel;
+      $admin=$obj->admin;
     }
     $calificada=0;
     $sql="SELECT * FROM users ORDER BY puntaje DESC";
@@ -82,7 +83,7 @@
       <div class="parte-arriba">
         <div class="perfil">
           <div class="linea">
-            <p><?php echo $_SESSION['usuario'] ?></p>
+            <p><?php echo $_SESSION['usuario'] ?><?php echo $admin==1?"<img class='verificado' src='../images/cheque.svg' alt='Verificado'>":""; ?></p>
             <a href="../../logout.php"><img src="../images/salir.svg" alt="Salir" class="salir"></a>
           </div>
           <div class="linea">
@@ -150,7 +151,7 @@
             ?>
             <div class="perfil ranking">
               <div class="linea">
-                <a href="../?idBuscado=<?php echo $arreglo['idusuario']; ?>"> <p><?php echo $arreglo['usuario'] ?></p></a>
+                <a href="../?idBuscado=<?php echo $arreglo['idusuario']; ?>"> <p><?php echo $arreglo['usuario'] ?><?php echo $arreglo['admin']==1?"<img class='verificado' src='https://liveupproject.000webhostapp.com/Home/images/cheque.svg' alt='Verificado'>":""; ?></p></a>
                 <p class="numero_rank <?php echo checarSiEsTop3($contadorResultados); ?>">#<?php echo $contadorResultados; ?></p>
                 <p class="puntaje_destacando"><?php echo $arreglo['puntaje'] ?> puntos</p>
               </div>

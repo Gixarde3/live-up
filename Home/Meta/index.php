@@ -30,6 +30,7 @@
       while($resultado=mysqli_fetch_object($consulta)){
         $user=$resultado->usuario;
         $id_usu=$resultado->idusuario;
+        $adminBuscado=$resultado->admin;
       }
     }
     $usuarioEnLinea=$_SESSION['usuario'];
@@ -47,6 +48,7 @@
         $puntos=$obj->puntaje;
         $nivel=$obj->nivel;
         $porcentaje=$obj->porcentaje_nivel;
+        $admin=$obj->admin;
       }
     $id_meta=$_GET['id_meta'];
     $hash=$_GET['hash'];
@@ -58,16 +60,7 @@
     }
     $sql="SELECT * FROM minimetas WHERE meta_madre='$id_meta' AND usuario='$id_usu'";
     $resultado=mysqli_query($con,$sql);
-    if(isset($_POST['editar'])){
-      $id_tarea=$_POST['id_tarea_editar'];
-      $tareaEditada=$_POST['tareaEditada'];
-      $sql="UPDATE minimetas SET texto_tarea='$tareaEditada' WHERE id_tarea='$id_tarea'";
-      mysqli_query($con, $sql);
-      $_SESSION['recargar']=true;
-      $_SESSION['tareaRealizando']=$_GET['id_meta'];
-      $_SESSION['hash']=$_GET['hash'];
-      echo "<script type='text/javascript'>window.location='../';</script>";
-    }
+
     if(isset($_POST['eliminar'])){
       $id_tarea=$_POST['id_tarea_eliminar'];
       $sql="DELETE FROM minimetas WHERE id_tarea='$id_tarea'";
@@ -117,7 +110,7 @@
       <div class="parte-arriba">
         <div class="perfil">
           <div class="linea">
-            <p><?php echo $_SESSION['usuario'] ?></p>
+            <p><?php echo $_SESSION['usuario'] ?><?php echo $admin==1?"<img class='verificado' src='../images/cheque.svg' alt='Verificado'>":""; ?></p>
             <a href="../../logout.php"><img src="../images/salir.svg" alt="Salir" class="salir"></a>
           </div>
           <div class="linea">
@@ -172,58 +165,55 @@
           </div>
         </div>
         <div class="metas" id=metas style="display:block;">
-          <a class="hiper" href="../<?php echo isset($_GET['idBuscado'])?"?idBuscado=".$_GET['idBuscado']:"" ?>"><h2>Tareas de: <?php echo $texto_meta ?><?php echo isset($_GET['idBuscado'])?" de ".$user:""; ?></h2><img src="../images/hogar.svg" alt=""></a>
+          <?php if(isset($_GET['idBuscado'])){
+            $iconoVerficacion=$adminBuscado==1?"<img class='verificado' src='https://liveupproject.000webhostapp.com/Home/images/cheque.svg' alt='Verificado'>":"";
+            } ?>
+          <a class="hiper" href="../<?php echo isset($_GET['idBuscado'])?"?idBuscado=".$_GET['idBuscado']:"" ?>"><h2>Tareas de: <?php echo $texto_meta ?><?php echo isset($_GET['idBuscado'])?" de ".$user.$iconoVerficacion:""; ?></h2><img src="../images/hogar.svg" alt=""></a>
           <?php
           $porcentaje_ocupado=0;
+          $porcentaje_cumplido=0;
           $contadorTareas=0;
-          while($tareas=mysqli_fetch_array($resultado)){
-            echo"<div class='meta tarea'>";
-            if($tareas[3]==1){
-              echo "<div class='linea linea-tarea moviles' style='justify-content: space-around;'><div class='espacio'><p style='color: #43df30;'>".$tareas[4]."</p><p style='color: #43df30;'>Esta tarea otorgó ".$tareas[5]."% a la meta</p></div>";
-              if(!isset($_GET['idBuscado'])){
-                echo "<div class='botones-tarea'>".
-                "<button class='meta-boton' type='button' name='cumplir' onclick='crear(5, ".$tareas[0].")'>".
-                  "<img src='../images/seleccione.svg' alt='Cumplir meta' class='cumplir'>".
-                "</button>".
-                "<button class='meta-boton' type='button' name='editar' onclick='crear(8, ".$tareas[0].")'>".
-                  "<img src='../images/editar.svg' alt='Editar meta'>".
-                "</button>".
-                "<button class='meta-boton' type='button' name='eliminar' onclick='crear(9, ".$tareas[0].")''>".
-                  "<img src='../images/eliminar.svg' alt='Eliminar meta'>".
-                "</button>".
-              "</div>";
-              }else{
-                echo "<p class='tarea_estado' style='color: #43df30 text-align:center;'>Esta tarea ya ha sido cumplida</p>";
-              }
-              echo "</div>".
-              "</div>";
-            }else{
-              echo "<div class='linea linea-tarea moviles' style='justify-content: space-around;'>".
-              "<div class='espacio'>".
-                "<p>".$tareas[4]."</p>".
-                "<p>Esta tarea otorgará ".$tareas[5]."% a la meta</p>".
-              "</div>";
-              if(!isset($_GET['idBuscado'])){
-                echo "<div class='botones-tarea'>".
-                "<button class='meta-boton' type='button' name='cumplir' onclick='crear(4, ".$tareas[0].")'>".
-                  "<img src='../images/seleccione.svg' alt='Cumplir meta'>".
-                  "</button>".
-                  "<button class='meta-boton' type='button' name='editar' onclick='crear(8, ".$tareas[0].")'>".
-                    "<img src='../images/editar.svg' alt='Editar meta'>".
-                  "</button>".
-                  "<button class='meta-boton' type='button' name='eliminar' onclick='crear(9, ".$tareas[0].")''>".
-                    "<img src='../images/eliminar.svg' alt='Eliminar meta'>".
-                  "</button>".
-                "</div>";
-              }else{
-                echo "<p class='tarea-estado' style='text-align:center;'>Esta tarea no ha sido cumplida</p>";
-              }
-              echo "</div></div>";
-            }
-          $contadorTareas++;
-          $porcentaje_ocupado+=$tareas[5];
-          }
           ?>
+          <?php while($tareas=mysqli_fetch_array($resultado)): ?>
+            <div class="meta tarea">
+              <?php if ($tareas[3]==1): ?>
+                <div class="linea linea-tarea moviles" style="justify-content: space-around">
+                  <div class="espacio">
+                    <p style="color: #43df30"><?php echo $tareas[4] ?></p>
+                    <p style="color: #43df30">Esta tarea otorgó <input type="hidden" value=<?php echo $tareas[5]; ?> id=porcentajeDeLaMeta_<?php echo $tareas[0]; ?>></input><?php echo $tareas[5]; ?>% a la meta</p>
+                    <?php $porcentaje_cumplido+=$tareas[5]; ?>
+                  </div>
+                </div>
+                <?php if (!isset($_GET['idBuscado'])): ?>
+                  <div class="botones-tarea">
+                    <button class='meta-boton' type='button' name='cumplir' onclick='crear(5, <?php echo $tareas[0]; ?>)'><img src='../images/seleccione.svg' alt='Cumplir meta' class='cumplir'></button>
+                    <button class='meta-boton' type='button' name='editar' onclick='crear(8, <?php echo $tareas[0]; ?>)'><img src='../images/editar.svg' alt='Editar meta'></button>
+                    <button class='meta-boton' type='button' name='eliminar' onclick='crear(9, <?php echo $tareas[0]; ?>)'><img src='../images/eliminar.svg' alt='Eliminar meta'></button>
+                  </div>
+                <?php else: ?>
+                  <p class=tarea_estado style="color: #43df30; text-align:center;">Esta tarea ya ha sido cumplida</p>
+                <?php endif; ?>
+            <?php else: ?>
+              <div class="linea linea-tarea moviles" style="justify-content: space-around">
+                <div class="espacio">
+                  <p><?php echo $tareas[4] ?></p>
+                  <p>Esta tarea otorgará <input type="hidden" value=<?php echo $tareas[5]; ?> id=porcentajeDeLaMeta_<?php echo $tareas[0]; ?>></input><?php echo $tareas[5]; ?>% a la meta</p>
+                </div>
+              </div>
+              <?php if (!isset($_GET['idBuscado'])): ?>
+                <div class="botones-tarea">
+                  <button class='meta-boton' type='button' name='cumplir' onclick='crear(4,<?php echo $tareas[0]; ?>)'><img src='../images/seleccione.svg' alt='Cumplir meta'></button>
+                  <button class='meta-boton' type='button' name='editar' onclick='crear(8, <?php echo $tareas[0]; ?>)'><img src='../images/editar.svg' alt='Editar meta'></button>
+                  <button class='meta-boton' type='button' name='eliminar' onclick='crear(9, <?php echo $tareas[0]; ?>)'><img src='../images/eliminar.svg' alt='Eliminar meta'></button>
+                </div>
+              <?php else: ?>
+                <p class=tarea_estado style="text-align:center;">Esta tarea aún no ha sido cumplida</p>
+              <?php endif; ?>
+            <?php endif ?>
+            <?php $contadorTareas++;
+            $porcentaje_ocupado+=$tareas[5] ?>
+            </div>
+          <?php endwhile; ?>
           <?php if ($contadorTareas==0): ?>
             <?php if (isset($_GET['idBuscado'])): ?>
               <div class="tarea-nueva">
@@ -237,7 +227,7 @@
                 <h2>Añade una:</h2>
                 <form action='' method='post'>
                   <input class='metaNueva' type='text' name='tareaNueva' placeholder='Ingresa una tarea' required>
-                  <input class='metaNueva' type='text' name='porcentajeTarea' placeholder='Ingresa el porcentaje que da a la meta' required>
+                  <input class='metaNueva' type='number' name='porcentajeTarea' placeholder='Ingresa el porcentaje que da a la meta' required>
                   <input class='anadirBoton' type='submit' value='Añadir' name='anadir'>
                 </form>
               </div>
@@ -268,13 +258,38 @@
         $counter++;
       }
       if($counter<1){
-        if(($porcentaje_ocupado+$porcentajeDara)<=100&&$porcentajeDara!=0){
+        if(($porcentaje_ocupado+$porcentajeDara)<=100&&$porcentajeDara!=0&&$porcentajeDara>=0){
           $anadirMeta="INSERT INTO minimetas (meta_madre, usuario, texto_tarea, porcentaje) VALUES ('$id_meta', '$id_usu', '$tarea', $porcentajeDara)";
           $_SESSION['recargar']=true;
           $_SESSION['tareaRealizando']=$_GET['id_meta'];
           $_SESSION['hash']=$_GET['hash'];
           echo "<script type='text/javascript'>window.location='../';</script>";
           mysqli_query($con, $anadirMeta);
+        }else{
+          echo "<script type='text/javascript'>crear(6,0)</script>";
+        }
+      }
+    }
+    if(isset($_POST['editar'])){
+      $id_tarea=$_POST['id_tarea_editar'];
+      $porcentajeNuevo=$_POST['porcentajeEditada'];
+      $tareaEditada=$_POST['tareaEditada'];
+      $sql="SELECT * FROM minimetas WHERE meta_madre='$id_meta' AND usuario='$id_usu' AND texto_tarea='$tareaEditada'";
+      $checarTarea=mysqli_query($con, $sql);
+      $counter=0;
+      while($obj=mysqli_fetch_object($checarTarea)){
+        $counter++;
+      }
+      if($counter<1){
+        if(($porcentaje_cumplido+$porcentajeNuevo)<=100&&$porcentajeNuevo!=0&&$porcentajeNuevo>0){
+          $sql="UPDATE minimetas SET texto_tarea='$tareaEditada' WHERE id_tarea='$id_tarea'";
+          mysqli_query($con, $sql);
+          $sql="UPDATE minimetas SET porcentaje='$porcentajeNuevo' WHERE id_tarea='$id_tarea'";
+          mysqli_query($con, $sql);
+          $_SESSION['recargar']=true;
+          $_SESSION['tareaRealizando']=$_GET['id_meta'];
+          $_SESSION['hash']=$_GET['hash'];
+          echo "<script type='text/javascript'>window.location='../';</script>";
         }else{
           echo "<script type='text/javascript'>crear(6,0)</script>";
         }
