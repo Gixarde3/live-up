@@ -31,7 +31,7 @@ if(isset($_SESSION['calificar'])){
         echo $_SESSION['usuario'];
       ?></title>
     <?php else: ?>
-      <script type="text/javascript">window.location="/";</script>
+    </title>  <script type="text/javascript">window.location="/";</script>
     <?php endif; ?>
     <!-- De lo contrario, simplemente te regrsa a la página inicial. -->
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">

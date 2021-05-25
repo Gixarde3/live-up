@@ -20,10 +20,7 @@ async function abrir(){
     document.getElementById('fondo-abrido').style='display: none; z-index:0;';
     document.getElementById('metas').style='display: block;z-index: 6;';
     document.getElementById('conf').style='border-radius: 0px 0px 18px 0px;';
-    for (var x = porcentajeAAbrir; x > -110 ; x=x-10) {
-      document.getElementById('desplegar').style= 'left: '+x+'%;';
-        await sleep(1);
-      }
+    document.getElementById('desplegar').style= 'left: -110%;';
     }else{
       document.getElementById('cerrarDesplegado').style='display: block; z-index:4;';
       document.getElementById('flecha').style = '-webkit-transform: rotate(-180deg);-moz-transform: rotate(-180deg);-ms-transform: rotate(-180deg);transform: rotate(-180deg);';
@@ -31,37 +28,24 @@ async function abrir(){
       document.getElementById('fondo-abrido').style='display: block; z-index:3;';
       document.getElementById('metas').style='display: block;z-index: 2;';
       document.getElementById('conf').style='border-radius: 0px 0px 0px 0px;';
-      for (var x = -100; x < porcentajeAAbrir+10; x=x+10) {
-        document.getElementById('desplegar').style= 'left: '+x+'%;';
-          await sleep(1);
-      }
+      document.getElementById('desplegar').style= 'left: '+porcentajeAAbrir+'%;';
     }
   }
   async function minimizar(){
     var width=40;
     var height=30;
-    for (var i = 10; i > 0; i=i-1) {
-      width=width-4;
-      height=height-3;
-      document.getElementById('crear-meta').style='display: flex;z-index: 8; width: '+width+'%;left: '+(50-(width/2))+'%;height: '+height+'%;top: '+(50-(height/2))+'%;';
-      document.getElementById('titulo').style='font-size: '+height+'px;';
-      if(document.getElementById('aclaracion')){
-        document.getElementById('aclaracion').style='display: none;';
-      }
-      await sleep(1);
-    }
+    document.getElementById('crear-meta').style='opacity: 0;z-index: 8; width:0%; height: 0;%';
     document.getElementById('fondo-abrido').style='display: none; z-index:0;';
-    document.getElementById('crear-meta').style='display: none; z-index: 0;'
   }
   async function crear(accionEspecifica, id_meta){
     var anchoPantalla=window.innerWidth;
     var anchoSalto=0;
     console.log(anchoPantalla);
     if(anchoPantalla<=600){
-      anchoSalto=9;
+      anchoSalto=90;
     }
     else{
-      anchoSalto=4;
+      anchoSalto=40;
     }
     if(document.getElementById('aclaracion')){
       document.getElementById('aclaracion').style='display: none;';
@@ -135,18 +119,7 @@ async function abrir(){
     }
     document.getElementById('fondo-abrido').style='display: block; z-index:7;';
     console.log("Por alguna razón, no se actualiza en el servidor");
-    var width=0;
-    var height=0;
-    for (var i = 0; i < 10; i++) {
-      width=width+anchoSalto;
-      height=height+3;
-      document.getElementById('crear-meta').style='display: flex;z-index: 8; width: '+width+'%;left: '+(50-(width/2))+'%;height: '+height+'%;top: '+(50-(height/2))+'%;';
-      document.getElementById('titulo').style='font-size: '+height+'px;';
-      await sleep(1);
-    }
-    if(document.getElementById('aclaracion')){
-      document.getElementById('aclaracion').style='display: block;';
-    }
+    document.getElementById('crear-meta').style='opacity:1;z-index: 8; width: '+anchoSalto+'%;height: 30%;';
   }
   function rellenar(id_estrella_maxima){
     document.getElementById('valor').value=id_estrella_maxima;

@@ -243,6 +243,9 @@ margin-bottom: 0;
   max-height: 400px;
   padding-top: 18px;
   padding-bottom: 18px;
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
 }
 .fondo-abrido{
   width: 100%;
@@ -285,7 +288,7 @@ meta p{
   text-align: center;
 }
 .crear-meta{
-  position: fixed;
+  position: absolute;
   flex-direction: column;
   z-index: 0;
   border-radius: 18px 18px 18px 18px;
@@ -293,9 +296,15 @@ meta p{
   -webkit-border-radius: 18px 18px 18px 18px;
   background: rgba(255, 255, 255, 0.5);
   border: 3px solid white;
-  display: none;
+  opacity: 0;
+  display: flex;
   justify-content:center;
   align-items: center;
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  top: 35%;
+  left: 30%;
 }
 .cerrar{
   position: absolute;
@@ -558,6 +567,9 @@ meta p{
   }
   .tarea_estado{
     width: 80%;
+  }
+  .crear-meta{
+    left: 5%;
   }
 }
 @media screen and (max-width: 600px) {

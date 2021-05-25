@@ -12,7 +12,7 @@
         echo $_SESSION['usuario'];
       ?></title>
     <?php else: ?>
-     </title><script type="text/javascript">window.location="/";</script>
+      </title> <script type="text/javascript">window.location="/";</script>
     <?php endif; ?>
     <script type="text/javascript" src="../js/Home.js">
     </script>
@@ -168,7 +168,21 @@
           <?php if(isset($_GET['idBuscado'])){
             $iconoVerficacion=$adminBuscado==1?"<img class='verificado' src='https://liveupproject.000webhostapp.com/Home/images/cheque.svg' alt='Verificado'>":"";
             } ?>
-          <a class="hiper" href="../<?php echo isset($_GET['idBuscado'])?"?idBuscado=".$_GET['idBuscado']:"" ?>"><h2>Tareas de: <?php echo $texto_meta ?><?php echo isset($_GET['idBuscado'])?" de ".$user.$iconoVerficacion:""; ?></h2><img src="../images/hogar.svg" alt=""></a>
+          <a class="hiper" href="../<?php echo isset($_GET['idBuscado'])?"?idBuscado=".$_GET['idBuscado']:"" ?>">
+            <h2>Tareas de: <?php echo $texto_meta ?><?php echo isset($_GET['idBuscado'])?" de ".$user.$iconoVerficacion:""; ?></h2>
+            <img src="../images/hogar.svg" alt="">
+          </a>
+          <div class="meta">
+            <div class="linea linea-meta">
+              <p><?php echo $texto_meta; ?></p>
+            </div>
+            <div class="linea linea-meta">
+                <div class="barra-porcentaje meta-barra">
+                  <span class="porcentaje" style="width: <?php echo $porcentaje_meta; ?>%"></span>
+                </div>
+                <p><?php echo $porcentaje_meta; ?>%</p>
+            </div>
+          </div>
           <?php
           $porcentaje_ocupado=0;
           $porcentaje_cumplido=0;

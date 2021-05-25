@@ -13,9 +13,8 @@
       ?>
       </title>
     <?php else: ?>
-      <script type="text/javascript">window.location="/";</script>
+        </title> <script type="text/javascript">window.location="/";</script>
     <?php endif; ?>
-    </title>
     <script type="text/javascript" src="../js/Home.js">
     </script>
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
