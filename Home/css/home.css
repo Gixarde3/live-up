@@ -482,6 +482,9 @@ meta p{
 .contenedor_meta{
   overflow-y: hidden;
 }
+.priv{
+  width: 40%;
+}
 /*Moviles*/
 @media screen and (max-width: 768px) {
   body{
@@ -570,6 +573,10 @@ meta p{
   }
   .crear-meta{
     left: 5%;
+  }
+  .priv{
+    width: 70%;
+    margin-right: 5px;
   }
 }
 @media screen and (max-width: 600px) {

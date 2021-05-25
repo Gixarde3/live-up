@@ -194,7 +194,11 @@
             <a href="../Meta/?id_meta=<?php echo $arreglo['id_meta'] ?>&hash=<?php echo $arreglo['hash']?> <?php echo $arreglo['id_padre']!=$id_usu?"&idBuscado=".$arreglo['id_padre']: ""; ?>">
               <div style='width:100%;display:flex;justify-content: space-between;'>
                 <?php echo  $arreglo['texto_meta']; ?>
-                <p> <?php echo $arregloUsu['nombre']  ?> <?php echo $arregloUsu['admin']==1?"<img class='verificado' src='../images/cheque.svg' alt='Verificado'>":""; ?></p>
+                <?php if (($arreglo['privada']!=1||$admin==1)&&$arreglo['privada']!=2): ?>
+                  <p> <?php echo $arregloUsu['nombre']  ?> <?php echo $arregloUsu['admin']==1?"<img class='verificado' src='../images/cheque.svg' alt='Verificado'>":""; ?></p>
+                <?php else: ?>
+                  <p>Usuario privado</p>
+                <?php endif; ?>
               </div>
             </a>
             <div class='linea linea-meta'>

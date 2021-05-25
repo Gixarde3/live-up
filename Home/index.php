@@ -96,13 +96,31 @@ if(isset($_SESSION['calificar'])){
       $sql="DELETE FROM minimetas WHERE meta_madre='$id_meta'";
       mysqli_query($con,$sql);
     }
+    if(isset($_POST['privatizar'])){
+      $uno=1;
+      $dos=2;
+      $id_meta=$_POST['id_meta_privatizar'];
+      if($admin!=1){
+        $sql="UPDATE metas SET privada='$uno' WHERE id_meta='$id_meta'";
+        mysqli_query($con,$sql);
+      }else{
+        $sql="UPDATE metas SET privada='$dos' WHERE id_meta='$id_meta'";
+        mysqli_query($con,$sql);
+      }
+    }
+    if(isset($_POST['publicar'])){
+      $uno=0;
+      $id_meta=$_POST['id_meta_publicar'];
+      $sql="UPDATE metas SET privada='$uno' WHERE id_meta='$id_meta'";
+      mysqli_query($con,$sql);
+    }
     $consultarMetas="SELECT * FROM metas WHERE id_padre='$id_usu'";
     $resultadoMetas=mysqli_query($con,$consultarMetas);
     $cumplida=1;
     $por=100;
     $sql="UPDATE metas SET cumplida='$cumplida' WHERE porcentaje='$por'";
     mysqli_query($con,$sql);
-    $sql="SELECT * From metas WHERE cumplida='$cumplida'";
+    $sql="SELECT * From metas WHERE cumplida='$cumplida' AND calificada='$cumplida'";
     $consulta=mysqli_query($con,$sql);
     while($res=mysqli_fetch_object($consulta)){
       $subida=$res->puntos_subidos;
@@ -200,7 +218,7 @@ if(isset($_SESSION['calificar'])){
            echo isset($_GET['idBuscado'])?"de ".$user.$iconoVerficacion:"";?></h1>
           <?php $contadorMetas=0; ?>
           <?php while($arreglo=mysqli_fetch_array($resultadoMetas)): ?>
-            <?php if ($arreglo['cumplida']!=1&&!isset($_POST['metas_cumplidas'])): ?>
+            <?php if ($arreglo['cumplida']!=1&&!isset($_POST['metas_cumplidas'])&&($arreglo['privada']==0||!isset($_GET['idBuscado'])||($admin==1&&$arreglo['privada']!=2))): ?>
               <div class="meta">
                 <?php $extra=isset($_GET['idBuscado'])?"&idBuscado=".$_GET['idBuscado']:""; ?>
                 <div class="linea linea-meta">
@@ -223,6 +241,9 @@ if(isset($_SESSION['calificar'])){
                     <img src='../Home/images/portapapeles.svg' alt='Editar meta'>
                   </button>
                   </a>
+                  <button class="meta-boton" type="button" name="privatizar" <?php if (!isset($_GET['idBuscado'])): ?>onclick="crear(<?php echo $arreglo['privada']==0?"13":"14" ?>,<?php echo $arreglo[0] ?>)<?php endif; ?> ">
+                    <img src='images/candado<?php echo $arreglo['privada']==0?"_vacio.svg":".svg"; ?>' alt='Privatizar meta'>
+                  </button>
                   <?php if (!isset($_GET['idBuscado'])): ?>
                     <button class="meta-boton" type="button" name="eliminar" onclick="crear(3,<?php echo $arreglo[0] ?>)">
                       <img src='images/eliminar.svg' alt='Eliminar meta'>
@@ -233,7 +254,7 @@ if(isset($_SESSION['calificar'])){
                </div>
             <?php $contadorMetas++;?>
           <?php else: ?>
-            <?php if ($arreglo['cumplida']==1&&isset($_POST['metas_cumplidas'])): ?>
+            <?php if ($arreglo['cumplida']==1&&isset($_POST['metas_cumplidas'])&&($arreglo['privada']==0||!isset($_GET['idBuscado'])||($admin==1&&$arreglo['privada']!=2))): ?>
               <div class="meta">
                 <?php $extra=isset($_GET['idBuscado'])?"&idBuscado=".$_GET['idBuscado']:""; ?>
                 <div class="linea linea-meta">
@@ -256,6 +277,9 @@ if(isset($_SESSION['calificar'])){
                     <img src='../Home/images/portapapeles.svg' alt='Editar meta'>
                   </button>
                   </a>
+                  <button class="meta-boton" type="button" name="privatizar" <?php if (!isset($_GET['idBuscado'])): ?>onclick="crear(<?php echo $arreglo['privada']==0?"13":"14" ?>,<?php echo $arreglo[0] ?>)<?php endif; ?> ">
+                    <img src='images/candado<?php echo $arreglo['privada']==0?"_vacio.svg":".svg"; ?>' alt='Privatizar meta'>
+                  </button>
                   <?php if (!isset($_GET['idBuscado'])): ?>
                     <button class="meta-boton" type="button" name="eliminar" onclick="crear(3,<?php echo $arreglo[0] ?>)">
                       <img src='images/eliminar.svg' alt='Eliminar meta'>

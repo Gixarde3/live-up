@@ -116,6 +116,30 @@ async function abrir(){
       "<button type='button' onclick=minimizar() class='no'><p>¡Entendido! 👍</p></button>"+
       "</form>"
       break;
+      case 13:
+      document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'><img src='images/cerrar.svg' alt='Cerrar'></button>"+
+      "<h2 id=titulo>¿Estás seguro de volver esta meta privada?</h2>"+
+      "<p class='texto-aclaracion'>Esto hará que no se vea tu usuario cuando esta meta sea califica, ni será listada si otros usuarios visitan tu perfil. Solo tu podrás ver esta meta</p>"+
+      "<form action='' method='post'>"+
+        "<input type='text' name='id_meta_privatizar' value='"+id_meta+"' style='display: none;'>"+
+        "<div class='linea'>"+
+          "<input class='anadirBoton priv' type='submit' name='privatizar' value='Privatizar 🔒' id=titulo>"+
+          "<button type='button' name='no' onclick='minimizar()' class='no'><p>No</p></button>"+
+        "</div>"+
+      "</form>";
+      break;
+      case 14:
+      document.getElementById('crear-meta').innerHTML="<button class='cerrar' type='button' name='cerrar' onclick='minimizar()'><img src='images/cerrar.svg' alt='Cerrar'></button>"+
+      "<h2 id=titulo>¿Estás seguro de volver esta meta pública?</h2>"+
+      "<p class='texto-aclaracion'>Esto hará que se vea tu usuario cuando esta meta sea califica, y será listada si otros usuarios visitan tu perfil.</p>"+
+      "<form action='' method='post'>"+
+        "<input type='text' name='id_meta_publicar' value='"+id_meta+"' style='display: none;'>"+
+        "<div class='linea'>"+
+          "<input class='anadirBoton priv' type='submit' name='publicar' value='Publicar' id=titulo>"+
+          "<button type='button' name='no' onclick='minimizar()' class='no'><p>No</p></button>"+
+        "</div>"+
+      "</form>";
+      break;
     }
     document.getElementById('fondo-abrido').style='display: block; z-index:7;';
     console.log("Por alguna razón, no se actualiza en el servidor");

@@ -57,6 +57,7 @@
     while($obj=mysqli_fetch_object($resultadoDeLaMeta)){
       $texto_meta=$obj->texto_meta;
       $porcentaje_meta=$obj->porcentaje;
+      $privada=$obj->privada;
     }
     $sql="SELECT * FROM minimetas WHERE meta_madre='$id_meta' AND usuario='$id_usu'";
     $resultado=mysqli_query($con,$sql);
@@ -168,8 +169,14 @@
           <?php if(isset($_GET['idBuscado'])){
             $iconoVerficacion=$adminBuscado==1?"<img class='verificado' src='https://liveupproject.000webhostapp.com/Home/images/cheque.svg' alt='Verificado'>":"";
             } ?>
-          <a class="hiper" href="../<?php echo isset($_GET['idBuscado'])?"?idBuscado=".$_GET['idBuscado']:"" ?>">
-            <h2>Tareas de: <?php echo $texto_meta ?><?php echo isset($_GET['idBuscado'])?" de ".$user.$iconoVerficacion:""; ?></h2>
+          <a class="hiper" <?php if ($privada==0||($admin==1&&$privada!=2)): ?>
+            href="../<?php echo isset($_GET['idBuscado'])?"?idBuscado=".$_GET['idBuscado']:"" ?>">
+          <?php endif; ?>
+          <h2>Tareas de: <?php echo $texto_meta ?>
+          <?php if ($privada==0||($admin==1&&$privada!=2)): ?>
+            <?php echo isset($_GET['idBuscado'])?" de ".$user.$iconoVerficacion:""; ?>
+          <?php endif; ?>
+          </h2>
             <img src="../images/hogar.svg" alt="">
           </a>
           <div class="meta">
