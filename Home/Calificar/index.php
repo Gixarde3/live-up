@@ -41,9 +41,15 @@
       $porcentaje=$obj->porcentaje_nivel;
       $admin=$obj->admin;
     }
-    $calificada=0;
-    $sql="SELECT * FROM metas WHERE calificada='$calificada'";
-    $res=mysqli_query($con, $sql);
+    if(isset($_POST['calificar_logros'])){
+      $calificada=0;
+      $sql="SELECT * FROM logros WHERE calificada='$calificada'";
+      $res=mysqli_query($con, $sql);
+    }else{
+      $calificada=0;
+      $sql="SELECT * FROM metas WHERE calificada='$calificada'";
+      $res=mysqli_query($con, $sql);
+    }
     function buscarUsuario($id_usuario,$con){
       $sql="SELECT * FROM users WHERE idusuario='$id_usuario'";
       $consulta=mysqli_query($con,$sql);
@@ -107,6 +113,48 @@
         $_SESSION['calificar']=true;
         echo "<script type='text/javascript'>window.location='../';</script>";
       }
+    }
+      if(isset($_POST['enviar_estrellas_logro'])){
+        $validacion_de_meta_calificada_una_sola_vez=true;
+        $id_meta=$_POST['logro_calificar'];
+        $sql="SELECT * FROM logros_calificados WHERE id_usuario='$id_usu' AND id_logro='$id_meta'";
+        $consulta=mysqli_query($con,$sql);
+        while(mysqli_fetch_object($consulta)){
+          $validacion_de_meta_calificada_una_sola_vez=false;
+        }
+        if($validacion_de_meta_calificada_una_sola_vez||$admin==1){
+          if(isset($_POST['valor_estrellas'])){
+            $cantidad_estrellas=$_POST['valor_estrellas'];
+          }else{
+            $cantidad_estrellas=0;
+          }
+          $calificada=1;
+          $sql="SELECT * From logros WHERE id_logro='$id_meta'";
+          $consulta=mysqli_query($con,$sql);
+          while($obj=mysqli_fetch_object($consulta)){
+            $puntosActuales=$obj->puntos;
+            $cantidad_calificada=$obj->cantidad_calificacion;
+          }
+          $puntosNuevos=$puntosActuales+($cantidad_estrellas*10);
+          $cantidad_calificada++;
+          if($cantidad_calificada<=10){
+            $sql="UPDATE logros SET puntos='$puntosNuevos' WHERE id_logro='$id_meta'";
+            mysqli_query($con, $sql);
+            $sql="UPDATE logros SET cantidad_calificacion='$cantidad_calificada' WHERE id_logro='$id_meta'";
+            mysqli_query($con, $sql);
+          }
+          if($cantidad_calificada>=10){
+            $sql="UPDATE logros SET calificada='$calificada' WHERE id_logro='$id_meta'";
+            mysqli_query($con, $sql);
+          }
+          $promedio_puntos=$puntosNuevos/$cantidad_calificada;
+          $sql="UPDATE logros SET promedio_puntos='$promedio_puntos' WHERE id_logro='$id_meta'";
+          mysqli_query($con, $sql);
+          $sql="INSERT INTO logros_calificados(id_usuario,id_logro) VALUES ('$id_usu','$id_meta')";
+          mysqli_query($con,$sql);
+          $_SESSION['calificar']=true;
+          echo "<script type='text/javascript'>window.location='../';</script>";
+        }
     }
     $niveles = array(10,50,100,200,500,1000,2000,5000,10000);
     for ($i=0; $i <sizeof($niveles); $i++) {
@@ -181,42 +229,85 @@
 
         </div>
         <div class="metas" id=metas style="display:block;">
-          <h2>Metas por calificar: </h2>
-          <?php
-          $contadorResultados=0;
-          while($arreglo=mysqli_fetch_array($res)):
-          ?>
-          <div class="meta">
+          <div class="titulo_calificar">
+            <?php if (!isset($_POST['calificar_logros'])): ?>
+              <h2>Metas por calificar: </h2>
+              <form action="" method="post">
+                <input type="submit" name="calificar_logros" value="Calificar logros" style="text-align: center;">
+              </form>
+            <?php else: ?>
+              <h2>Logros por calificar: </h2>
+              <form action="" method="post">
+                <input type="submit" name="calificar_metas" value="Calificar metas" style="text-align: center;">
+              </form>
+            <?php endif; ?>
+          </div>
+          <?php if (!isset($_POST['calificar_logros'])): ?>
             <?php
-            $contadorResultados++;
-            $arregloUsu=buscarUsuario($arreglo['id_padre'],$con);
+            $contadorResultados=0;
+            while($arreglo=mysqli_fetch_array($res)):
             ?>
-            <a href="../Meta/?id_meta=<?php echo $arreglo['id_meta'] ?>&hash=<?php echo $arreglo['hash']?> <?php echo $arreglo['id_padre']!=$id_usu?"&idBuscado=".$arreglo['id_padre']: ""; ?>">
-              <div style='width:100%;display:flex;justify-content: space-between;'>
-                <?php echo  $arreglo['texto_meta']; ?>
-                <?php if (($arreglo['privada']!=1||$admin==1)&&$arreglo['privada']!=2): ?>
-                  <p> <?php echo $arregloUsu['nombre']  ?> <?php echo $arregloUsu['admin']==1?"<img class='verificado' src='../images/cheque.svg' alt='Verificado'>":""; ?></p>
-                <?php else: ?>
-                  <p>Usuario privado</p>
-                <?php endif; ?>
+            <div class="meta">
+              <?php
+              $contadorResultados++;
+              $arregloUsu=buscarUsuario($arreglo['id_padre'],$con);
+              ?>
+              <a href="../Meta/?id_meta=<?php echo $arreglo['id_meta'] ?>&hash=<?php echo $arreglo['hash']?> <?php echo $arreglo['id_padre']!=$id_usu?"&idBuscado=".$arreglo['id_padre']: ""; ?>">
+                <div style='width:100%;display:flex;justify-content: space-between;'>
+                  <?php echo  $arreglo['texto_meta']; ?>
+                  <?php if (($arreglo['privada']!=1||$admin==1)&&$arreglo['privada']!=2): ?>
+                    <p> <?php echo $arregloUsu['nombre']  ?> <?php echo $arregloUsu['admin']==1?"<img class='verificado' src='../images/cheque.svg' alt='Verificado'>":""; ?></p>
+                  <?php else: ?>
+                    <p>Usuario privado</p>
+                  <?php endif; ?>
+                </div>
+              </a>
+              <div class='linea linea-meta'>
+                <div class='barra-porcentaje meta-barra'>
+                  <span class='porcentaje' style="width: <?php echo $arreglo['porcentaje']; ?>%"></span>
+                </div>
+                <p><?php echo $arreglo['porcentaje'] ?>%</p>
+                <button class="boton_calificar_incorporado" type="button" name="button" onclick="crear(11,<?php echo $arreglo['id_meta']; ?>)"> <img src="../images/clasificacion.svg" alt="Calificar esta meta"> </button>
               </div>
-            </a>
-            <div class='linea linea-meta'>
-              <div class='barra-porcentaje meta-barra'>
-                <span class='porcentaje' style="width: <?php echo $arreglo['porcentaje']; ?>%"></span>
-              </div>
-              <p><?php echo $arreglo['porcentaje'] ?>%</p>
-              <button class="boton_calificar_incorporado" type="button" name="button" onclick="crear(11,<?php echo $arreglo['id_meta']; ?>)"> <img src="../images/clasificacion.svg" alt="Calificar esta meta"> </button>
-            </div>
-              <div style='width:100%; display:flex; justify-content:space-between;'>
-                <p style='width: 50%; text-align: center;'>Calificado:<?php  echo $arreglo['cantidad_calificacion'];?>  veces</p>
-                <p style='width:50%; text-align:center;'>Puntos promedio: <?php echo $arreglo['promedio_puntos']; ?></p>
-              </div>
+                <div style='width:100%; display:flex; justify-content:space-between;'>
+                  <p style='width: 50%; text-align: center;'>Calificado:<?php  echo $arreglo['cantidad_calificacion'];?>  veces</p>
+                  <p style='width:50%; text-align:center;'>Puntos promedio: <?php echo $arreglo['promedio_puntos']; ?></p>
+                </div>
 
-            </div>
-          <?php
-            endwhile;
-           ?>
+              </div>
+            <?php
+              endwhile;
+             ?>
+          <?php else: ?>
+            <?php
+            $contadorResultados=0;
+            while($arreglo=mysqli_fetch_array($res)):
+            ?>
+            <div class="meta">
+              <?php
+              $contadorResultados++;
+              $arregloUsu=buscarUsuario($arreglo['id_padre'],$con);
+              ?>
+              <p>
+                <div style='width:100%;display:flex;justify-content: space-between;'>
+                  <?php echo  $arreglo['texto_logro']; ?>
+                  <?php if (($arreglo['privada']!=1||$admin==1)&&$arreglo['privada']!=2): ?>
+                    <p> <?php echo $arregloUsu['nombre']  ?> <?php echo $arregloUsu['admin']==1?"<img class='verificado' src='../images/cheque.svg' alt='Verificado'>":""; ?></p>
+                  <?php else: ?>
+                    <p>Usuario privado</p>
+                  <?php endif; ?>
+                  <button class="boton_calificar_incorporado" type="button" name="button" onclick="crear(22,<?php echo $arreglo['id_logro']; ?>)"> <img src="../images/clasificacion.svg" alt="Calificar este logro"> </button>
+                </div>
+              </p>
+                <div style='width:100%; display:flex; justify-content:space-between;'>
+                  <p style='width: 50%; text-align: center;'>Calificado:<?php  echo $arreglo['cantidad_calificacion'];?>  veces</p>
+                  <p style='width:50%; text-align:center;'>Puntos promedio: <?php echo $arreglo['promedio_puntos']; ?></p>
+                </div>
+              </div>
+            <?php
+              endwhile;
+             ?>
+          <?php endif; ?>
           <?php if ($contadorResultados<1): ?>
             <h3>Al parecer no hay metas que puedas calificar.</h3>
             <h3>¡Parece que tendrás que esperar un poco!.</h3>

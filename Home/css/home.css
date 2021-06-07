@@ -47,7 +47,7 @@ img{
   -webkit-filter: invert(100%);
   filter: invert(100%);
 }
-input{
+input, .logros{
   font-size: 23px;
   color: #ffffff;
   margin-bottom: 3px;
@@ -82,6 +82,9 @@ p{
 }
 h3{
   font-size: 26px;
+}
+ul, li{
+  font-size: 25px;
 }
 .abrir{
   cursor: pointer;
@@ -208,6 +211,7 @@ margin-bottom: 0;
 }
 .meta{
   width: 90%;
+  margin-bottom: 15px;
 }
 .boton-opcion{
   display: flex;
@@ -305,6 +309,8 @@ meta p{
   -ms-transition: all 0.5s ease;
   top: 35%;
   left: 30%;
+  width: 40%;
+  height: 30%;
 }
 .cerrar{
   position: absolute;
@@ -485,6 +491,17 @@ meta p{
 .priv{
   width: 40%;
 }
+.boton-logro{
+  width: 90%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.titulo_calificar{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
 /*Moviles*/
 @media screen and (max-width: 768px) {
   body{
@@ -577,6 +594,9 @@ meta p{
   .priv{
     width: 70%;
     margin-right: 5px;
+  }
+  .crear-meta{
+    width: 90%;
   }
 }
 @media screen and (max-width: 600px) {
